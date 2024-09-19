@@ -1,0 +1,11 @@
+{% load filters %}
+<h1>This is a register template</h1>
+<form action="{% url 'signup user' %}" method="post">
+    {{ form.email|placeholder:'Email' }}
+    {{ form.password1|placeholder:'Password' }}
+    {{ form.password2|placeholder:'Repeat Password' }}
+    
+    <button type="submit">Sign Up</button>
+    
+    {% csrf_token %}
+</form>

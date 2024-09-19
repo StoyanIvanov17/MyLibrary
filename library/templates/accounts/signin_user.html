@@ -1,0 +1,10 @@
+{% load filters %}
+<h1>This is a sign in template</h1>
+<form action="{% url 'signin user' %}?next={{ next }}" method="post">
+    {{ form.username|placeholder:'Library card number' }}
+    {{ form.password|placeholder:'Password' }}
+    
+    <button type="submit">Log In</button>
+    
+    {% csrf_token %}
+</form>
