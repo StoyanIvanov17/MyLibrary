@@ -1,0 +1,10 @@
+<h1>Just a basic home page view</h1>
+<a href="{% url 'signin user' %}" class="btn">Log in</a>
+<a href="{% url 'signup user' %}" class="btn">Register</a>
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.library_card_number }}</p>
+    <a href="{% url 'signout user' %}">Logout</a>
+{% else %}
+    <p>You are not logged in.</p>
+{% endif %}
