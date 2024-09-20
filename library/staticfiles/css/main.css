@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    font-family: system-ui;
+    position: relative;
+    height: 500px;
+}
+/* Blurred background container */
+.background-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/hiker-reading-book-in-mountain.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 1; /* Place behind the content */
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120vh; /* Adjust as needed to fit your layout */
+}
+.navbar {
+    position: relative;
+    background: transparent;
+    padding: 20px;
+    z-index: 1;
+}
+.content-overlay {
+    position: absolute;
+    top: 20px; /* Distance from the top */
+    left: 20px; /* Distance from the left */
+    right: 20px; /* Maintain space for other links */
+    z-index: 2; /* Ensure it's above the background */
+    display: flex;
+    justify-content: space-between; /* Space out links */
+    align-items: center; /* Center vertically */
+}
+.nav-link {
+    font-size: 1.5rem; /* Bigger font size */
+    font-weight: bold; /* Make it more noticeable */
+    color: white; /* Color of the text */
+    text-decoration: none; /* Remove underline */
+    padding: 5px 10px; /* Add padding around the text */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect */
+.nav-link:hover {
+    color: #a9cef1; /* Change color on hover (golden yellow) */
+    transform: scale(1.1); /* Slight zoom effect */
+}
