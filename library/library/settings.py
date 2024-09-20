@@ -103,8 +103,6 @@ LOGIN_REDIRECT_URL = reverse_lazy('home page')
 LOGIN_URL = reverse_lazy('signin user')
 LOGOUT_REDIRECT_URL = reverse_lazy('home page')
 
-AUTHENTICATION_BACKENDS = [
-    'library.lb_accounts.utils.backends.AdminEmailBackend',
-    'library.lb_accounts.utils.backends.LibraryCardOrEmailBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+# ]

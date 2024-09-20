@@ -1,10 +1,25 @@
+{% load static %}
 {% load filters %}
-<h1>This is a sign in template</h1>
-<form action="{% url 'signin user' %}?next={{ next }}" method="post">
-    {{ form.username|placeholder:'Library card number' }}
-    {{ form.password|placeholder:'Password' }}
-    
-    <button type="submit">Log In</button>
-    
-    {% csrf_token %}
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>Library</title>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="register">
+        <h1>Log in</h1>
+        <form action="{% url 'signin user' %}" method="POST">
+            {% csrf_token %}
+            {{ form.username|placeholder:'Email' }}
+            {{ form.password|placeholder:'Password' }}
+            
+            <button type="submit">Log in</button>
+            <p>Don't have an account? <a href="{% url 'signup user' %}">Register</a></p>
+        </form>
+    </div>
+</body>
+</html>

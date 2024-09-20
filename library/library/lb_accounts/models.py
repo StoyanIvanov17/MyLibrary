@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from library.lb_accounts.managers import LibraryUserManager
-from library.lb_accounts.utils.library_card_number_generator import generate_library_card_number
 
 
 class LibraryUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
@@ -38,15 +37,9 @@ class LibraryUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         blank=True,
     )
 
-    USERNAME_FIELD = 'library_card_number'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'email'
 
     objects = LibraryUserManager()
-
-    def save(self, *args, **kwargs):
-        if not self.library_card_number:
-            self.library_card_number = generate_library_card_number()
-        super().save(*args, **kwargs)
 
 
 class LibraryProfile(models.Model):
@@ -100,8 +93,6 @@ class LibraryProfile(models.Model):
         primary_key=True,
         on_delete=models.CASCADE,
     )
-
-    USERNAME_FIELD = 'email'
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
