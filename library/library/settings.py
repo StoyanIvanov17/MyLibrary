@@ -82,6 +82,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+if DEBUG:
+    AUTH_PASSWORD_VALIDATORS = ()
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -95,14 +98,14 @@ STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles',
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'lb_accounts.LibraryUser'
 
-LOGIN_REDIRECT_URL = reverse_lazy('home page')
-LOGIN_URL = reverse_lazy('signin user')
-LOGOUT_REDIRECT_URL = reverse_lazy('home page')
+LOGIN_REDIRECT_URL = 'registration profile'
+LOGIN_URL = 'signin user'
+LOGOUT_REDIRECT_URL = 'home page'
 
-# AUTHENTICATION_BACKENDS = [
-#     'django.contrib.auth.backends.ModelBackend',
-# ]

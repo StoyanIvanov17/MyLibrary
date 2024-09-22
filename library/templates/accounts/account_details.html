@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+<div class="account-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="profile-info">
+            <img src="{% static 'images/librarian.jpg' %}" alt="Profile Picture" class="profile-pic">
+            <div class="profile-details">
+                <p>{{ user.email }}</p>
+                <p>{{ object.first_name }} {{ object.last_name }}</p>
+                <p>{{ object.phone_number }}</p>
+                <p>{{ object.address }}</p>
+                <p>{{ object.city }}</p>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#">My Booklists</a></li>
+                <li><a href="#">My Bookshelf</a></li>
+                <li><a href="#">Reviews</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="{% url 'account edit' pk=object.pk %}">Edit Profile</a></li>
+            </ul>
+        </nav>
+        <div class="users-follow">
+            <h3>Users I follow</h3>
+            <ul>
+                <li><a href="#">YCL</a></li>
+            </ul>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <section class="main-content">
+        <h1>Bookshelves</h1>
+        <div class="tabs">
+            <a href="#">Completed (1)</a>
+            <a href="#">In Progress (1)</a>
+            <a href="#">For Late (3)</a>
+        </div>
+        <div class="whats-new">
+            <h2>What's New?</h2>
+            <div class="new-item">
+                <p><strong>Added How the García girls lost their accents to booklist</strong></p>
+                <p class="time">3 months ago</p>
+            </div>
+            <div class="new-item">
+                <p><strong>Added Breath, eyes, memory to booklist</strong></p>
+                <p class="time">3 months ago</p>
+            </div>
+            <!-- Add more entries as needed -->
+        </div>
+    </section>
+</div>
+{% endblock %}

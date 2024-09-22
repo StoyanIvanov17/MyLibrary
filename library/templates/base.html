@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Library</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'home page' %}" class="navbar-logo">MyLibrary</a>
+            {% if user.is_authenticated %}
+                <ul class="navbar-menu">
+                    {% if user.is_superuser or user.is_staff %}
+                        <li class="navbar-item"><a href="{% url 'item create' %}" class="navbar-link">Create Book</a></li>
+                    {% endif %}
+                    <li class="navbar-item"><a href="{% url 'home page' %}" class="navbar-link">Home</a></li>
+                    <li class="navbar-item"><a href="{% url 'account details' pk=user.pk %}" class="navbar-link">My Account</a></li>
+                    <li class="navbar-item"><a href="#" class="navbar-link">Collections</a></li>
+                    <li class="navbar-item"><a href="#" class="navbar-link">Events</a></li>
+                    <li class="navbar-item"><a href="#" class="navbar-link">About</a></li>
+                    <li class="navbar-item"><a href="{% url 'signout user' %}" class="navbar-link">Log out</a></li>
+                </ul>
+            {% else %}
+                <div class="navbar-buttons">
+                    <a href="{% url 'signup user' %}" class="btn register-btn">Register</a>
+                    <a href="{% url 'signin user' %}" class="btn login-btn">Login</a>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <div class="hero-image">
+        <img src="{% static 'images/hiker-reading-book-in-mountain.jpg' %}" alt="Nav Image">
+    </div>
+    
+    {% block main_content %}
+    {% endblock %}
+    
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+</body>
+</html>

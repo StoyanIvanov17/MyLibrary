@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+<div class="edit-account-wrapper">
+    <section class="main-content">
+        <h1>Edit Account Details</h1>
+        <form class="{% url 'account edit' pk=object.pk %}" method="post" class="edit-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="submit-btn">Update Profile</button>
+        </form>
+    </section>
+</div>
+{% endblock %}
