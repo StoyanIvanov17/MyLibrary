@@ -3,6 +3,7 @@ from django.contrib.auth import models as auth_models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from library.common.validators import MaxFileSizeValidator
 from library.lb_accounts.managers import LibraryUserManager
 
 
@@ -51,23 +52,20 @@ class LibraryProfile(models.Model):
     email = models.EmailField(
         max_length=30,
         unique=True,
-        error_messages={
-            "unique": _("A user with that email address already exists."),
-        },
-        null=False,
-        blank=False,
     )
 
     first_name = models.CharField(
         max_length=MAX_NAME_LENGTH,
         null=False,
         blank=False,
+        verbose_name='First Name'
     )
 
     last_name = models.CharField(
         max_length=MAX_NAME_LENGTH,
         null=False,
         blank=False,
+        verbose_name='Last Name'
     )
 
     address = models.CharField(
@@ -80,6 +78,7 @@ class LibraryProfile(models.Model):
         max_length=MAX_PHONE_NUMBER_LENGTH,
         null=False,
         blank=False,
+        verbose_name='Phone Number'
     )
 
     city = models.CharField(
@@ -92,6 +91,14 @@ class LibraryProfile(models.Model):
         LibraryUser,
         primary_key=True,
         on_delete=models.CASCADE,
+        unique=True,
+    )
+
+    profile_picture = models.ImageField(
+        upload_to='profile_photos/',
+        null=True,
+        blank=True,
+        validators=[MaxFileSizeValidator(10 * 1024 * 1024)]
     )
 
     def __str__(self):

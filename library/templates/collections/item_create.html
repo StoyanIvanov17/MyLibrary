@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block main_content %}
+    {{ form }}
+    {% csrf_token %}
+    <button>Create Item</button>
+{% endblock %}

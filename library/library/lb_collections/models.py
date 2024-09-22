@@ -1,6 +1,8 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from library.common.validators import MaxFileSizeValidator
+
 
 class Author(models.Model):
     MAX_NAME_LENGTH = 50
@@ -70,6 +72,13 @@ class Item(models.Model):
     slug = models.SlugField(
         unique=True,
         blank=True
+    )
+
+    item_image = models.ImageField(
+        upload_to='item_images/',
+        blank=True,
+        null=True,
+        validators=[MaxFileSizeValidator(10 * 1024 * 1024)]
     )
 
     def save(self, *args, **kwargs):

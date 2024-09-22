@@ -1,0 +1,27 @@
+{% load static %}
+{% load filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <title>Complete Your Profile</title>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="register">
+        <h1>Complete Your Profile</h1>
+        <form action="{% url 'registration profile' %}" method="POST">
+            {% csrf_token %}
+            {{ form.first_name|placeholder:'First Name' }}
+            {{ form.last_name|placeholder:'Last Name' }}
+            {{ form.address|placeholder:'Address' }}
+            {{ form.phone_number|placeholder:'Phone Number' }}
+            {{ form.city|placeholder:'City' }}
+            
+            <button type="submit">Save Profile</button>
+        </form>
+    </div>
+</body>
+</html>
