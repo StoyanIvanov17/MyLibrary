@@ -11,7 +11,7 @@ class ItemBaseForm(forms.ModelForm):
 
     class Meta:
         model = Item
-        fields = ['title', 'author', 'genre', 'item_type', 'publication_date', 'isbn', 'item_image']
+        fields = ['title', 'author', 'genre', 'item_type', 'publication_date', 'item_image', 'sample']
 
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Title'}),
@@ -19,8 +19,8 @@ class ItemBaseForm(forms.ModelForm):
             'genre': forms.TextInput(attrs={'placeholder': 'Genre'}),
             'item_type': forms.Select(attrs={'placeholder': 'Item Type'}),
             'publication_date': forms.DateInput(attrs={'placeholder': 'Publication Date', 'type': 'date'}),
-            'isbn': forms.TextInput(attrs={'placeholder': 'ISBN'}),
             'item_image': forms.FileInput(attrs={'placeholder': 'Item Image'}),
+            'sample': forms.TextInput(attrs={'placeholder': 'Item Sample'})
         }
 
     def clean_author(self):

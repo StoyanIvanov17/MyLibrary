@@ -2,6 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from library.core.validators import MaxFileSizeValidator
+from library.lb_collections.core.isbn_generator import generate_isbn
 
 
 class Author(models.Model):
@@ -55,13 +56,7 @@ class Item(models.Model):
         unique=True
     )
 
-    available_copies = models.PositiveIntegerField(
-        default=1
-    )
-
-    total_copies = models.PositiveIntegerField(
-        default=1
-    )
+    sample = models.TextField()
 
     slug = models.SlugField(
         unique=True,
@@ -70,12 +65,14 @@ class Item(models.Model):
 
     item_image = models.ImageField(
         upload_to='item_images/',
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
         validators=[MaxFileSizeValidator(10 * 1024 * 1024)],
     )
 
     def save(self, *args, **kwargs):
+        if not self.isbn:
+            self.isbn = generate_isbn()
         date_str = self.publication_date.strftime('%Y-%B-%d')
         slug_base = f"{self.item_type}-{date_str}-{self.author}-{self.title}-{self.genre}"
         self.slug = slugify(slug_base)

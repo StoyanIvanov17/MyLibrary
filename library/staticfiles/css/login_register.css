@@ -9,7 +9,7 @@
     margin: 0;
 }
 
-.overlay {
+.log_reg_body_overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -20,7 +20,7 @@
     pointer-events: none; /* Allow clicks to go through the overlay */
 }
 
-.register {
+.log_reg_body_register {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -32,7 +32,7 @@
     z-index: 2; /* Ensure the form is above the overlay */
 }
 
-h1 {
+.log_reg_body_h1 {
     margin-bottom: 20px;
     text-align: center;
     color: #333;
