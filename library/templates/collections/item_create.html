@@ -15,28 +15,7 @@
             <form action="{% url 'item create' %}" method="post" enctype="multipart/form-data" class="item-create-form">
                 {% csrf_token %}
                 <div class="item-create-form-group">
-                    <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
-                    {{ form.title }}
-                </div>
-                <div class="item-create-form-group">
-                    <label for="{{ form.author.id_for_label }}">{{ form.author.label }}</label>
-                    {{ form.author }}
-                </div>
-                <div class="item-create-form-group">
-                    <label for="{{ form.genre.id_for_label }}">{{ form.genre.label }}</label>
-                    {{ form.genre }}
-                </div>
-                <div class="item-create-form-group">
-                    <label for="{{ form.publication_date.id_for_label }}">{{ form.publication_date.label }}</label>
-                    {{ form.publication_date }}
-                </div>
-                <div class="item-create-form-group">
-                    <label for="{{ form.isbn.id_for_label }}">{{ form.isbn.label }}</label>
-                    {{ form.isbn }}
-                </div>
-                <div class="item-create-form-group">
-                    <label for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
-                    {{ form.image }}
+                    {{ form }}
                 </div>
                 <button type="submit" class="item-create-submit-button">Create Item</button>
             </form>

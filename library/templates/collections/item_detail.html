@@ -1,12 +1,35 @@
-details page
-{{ object.isbn }}
-<h1>now edit it</h1>
-    <form action="{% url 'item edit' pk=object.pk slug=object.slug %}" method="post">
-        {{ form }}
-        
-        {% if user.is_superuser or user.is_staff %}
-        <button class="login-btn" type="submit">Edit</button>
-        {% endif %}
-    
-        {% csrf_token %}
-    </form>
+{% extends 'base.html' %}
+{% load static %}
+
+<div class="hero-image">
+    {% block hero_image %}
+        <img src="{% static 'images/candle-inscription-books-compass.jpg' %}" alt="Nav Image">
+        <h1 class="navbar-title">Welcome to our library</h1>
+    {% endblock %}
+</div>
+
+{% block main_content %}
+<section class="item-details-page">
+    <div class="item-details-container">
+        <div class="item-details-cover">
+            <img src="{{ object.item_image.url }}" alt="Cover Image" />
+        </div>
+
+        <div class="item-details-info">
+            <h2 class="item-details-title">{{ object.title }}</h2>
+            <div class="item-details-description">
+                Author: {{ object.author.name }}<br>
+                Genre: {{ object.genre }}<br>
+                Publication Date: {{ object.publication_date|date:"F j, Y" }}<br>
+                ISBN: {{ object.isbn }}<br>
+                Read a Sample: {{ object.sample}}
+            </div>
+
+            <div class="item-details-action-buttons">
+                <a href="#" class="item-details-edit">Edit</a>
+                <a href="#" class="item-details-remove">Delete</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
