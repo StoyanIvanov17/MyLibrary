@@ -1,0 +1,5 @@
+<form action="{% url 'item edit' pk=object.pk slug=object.slug %}" method="post">
+    {{ form }}
+    <button class="login-btn" type="submit">Edit</button>
+    {% csrf_token %}>
+</form>

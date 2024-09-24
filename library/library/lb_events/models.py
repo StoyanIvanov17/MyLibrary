@@ -44,23 +44,3 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class RSVP(models.Model):
-    user = models.ForeignKey(
-        UserModel,
-        on_delete=models.CASCADE
-    )
-
-    event = models.ForeignKey(
-        Event,
-        on_delete=models.RESTRICT,
-        related_name='rsvps_event'
-    )
-
-    rsvp_date = models.DateTimeField(
-        auto_now_add=True
-    )
-
-    def __str__(self):
-        return f'{self.user} - {self.event}'

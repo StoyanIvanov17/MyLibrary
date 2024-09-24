@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <title>Library</title>
 </head>
-<body>
+<body class="log_reg_body" style="background-image: url('{% static 'images/man-sea-water-nature-person-mountain.jpg' %}');">
     <div class="overlay"></div>
     <div class="register">
         <h1>Log in</h1>
-        <form action="{% url 'signin user' %}" method="POST">
+        <form class="log_reg_form" action="{% url 'signin user' %}" method="POST">
             {% csrf_token %}
             {{ form.username|placeholder:'Email' }}
             {{ form.password|placeholder:'Password' }}

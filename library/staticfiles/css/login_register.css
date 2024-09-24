@@ -1,6 +1,5 @@
-body {
+.log_reg_body {
     font-family: Arial, sans-serif;
-    background-image: url('../images/tree-alone.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -39,12 +38,12 @@ h1 {
     color: #333;
 }
 
-form {
+.log_reg_form {
     display: flex;
     flex-direction: column;
 }
 
-form input {
+.log_reg_form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -54,25 +53,9 @@ form input {
     font-size: 16px;
 }
 
-form input:focus {
+.log_reg_form input:focus {
     border-color: #007bff;
     outline: none;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    background-color: #0056b3;
 }
 
 p {

@@ -61,28 +61,3 @@
     color: #0056b3;
 }
 
-/* Users I follow section */
-.users-follow {
-    margin-top: 20px;
-    font-size: 14px;
-    text-align: center;
-}
-
-.users-follow h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.users-follow ul {
-    list-style: none;
-    padding: 0;
-}
-
-.users-follow li a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.users-follow li a:hover {
-    text-decoration: underline;
-}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<div class="hero-image">
+    {% block hero_image %}
+        <img src="{% static 'images/background_collections.png' %}" alt="Nav Image">
+        <h1 class="navbar-title">Welcome to our library</h1>
+    {% endblock %}
+</div>
+
+{% block main_content %}
+    <body class="collection-body">
+        <div class="collection-container">
+            <h1>Explore the collection</h1>
+            <div class="collection-grid">
+                {% for item in items %}
+                    <div class="collection-item" style="background-image: url('{{ item.item_image.url }}');">
+                        <div class="item-info">
+                            <h2>{{ item.title }}</h2>
+                            <p>{{ item.author }}</p>
+                            <a href="{% url 'item detail' pk=item.pk slug=item.slug %}" class="details-btn">Details</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+{% endblock %}

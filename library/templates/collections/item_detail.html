@@ -1,0 +1,12 @@
+details page
+{{ object.isbn }}
+<h1>now edit it</h1>
+    <form action="{% url 'item edit' pk=object.pk slug=object.slug %}" method="post">
+        {{ form }}
+        
+        {% if user.is_superuser or user.is_staff %}
+        <button class="login-btn" type="submit">Edit</button>
+        {% endif %}
+    
+        {% csrf_token %}
+    </form>
