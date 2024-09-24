@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+
+
+{% block hero_image %}
+    <img src="{% static 'images/profile_bg.png' %}" alt="About Image">
+    <h1 class="navbar-title">This is your profile</h1>
+{% endblock %}
+
 {% block main_content %}
 <div class="account-wrapper">
     <!-- Sidebar -->
@@ -16,19 +23,13 @@
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="#">My Booklists</a></li>
-                <li><a href="#">My Bookshelf</a></li>
-                <li><a href="#">Reviews</a></li>
-                <li><a href="#">Privacy</a></li>
+                <li><a href="#">My Saved Items</a></li>
+                <li><a href="#">My Saved Events</a></li>
+                <li><a href="#">My Reviews</a></li>
                 <li><a href="{% url 'account edit' pk=object.pk %}">Edit Profile</a></li>
+                <li><a href="#">Delete Profile</a></li>
             </ul>
         </nav>
-        <div class="users-follow">
-            <h3>Users I follow</h3>
-            <ul>
-                <li><a href="#">YCL</a></li>
-            </ul>
-        </div>
     </aside>
     
     <!-- Main Content -->

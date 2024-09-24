@@ -1,14 +1,14 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from library.common.validators import MaxFileSizeValidator
+from library.core.validators import MaxFileSizeValidator
 
 
 class Author(models.Model):
     MAX_NAME_LENGTH = 50
 
     name = models.CharField(
-        max_length=MAX_NAME_LENGTH
+        max_length=MAX_NAME_LENGTH,
     )
 
     bio = models.TextField(
@@ -18,12 +18,6 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Genre(models.Model):
-    name = models.CharField(
-        max_length=100
-    )
 
 
 class Item(models.Model):
@@ -41,12 +35,12 @@ class Item(models.Model):
 
     author = models.ForeignKey(
         Author,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='items_author'
     )
 
-    genre = models.ManyToManyField(
-        Genre,
-        related_name='items_genre'
+    genre = models.CharField(
+        max_length=100,
     )
 
     item_type = models.CharField(
@@ -78,7 +72,7 @@ class Item(models.Model):
         upload_to='item_images/',
         blank=True,
         null=True,
-        validators=[MaxFileSizeValidator(10 * 1024 * 1024)]
+        validators=[MaxFileSizeValidator(10 * 1024 * 1024)],
     )
 
     def save(self, *args, **kwargs):

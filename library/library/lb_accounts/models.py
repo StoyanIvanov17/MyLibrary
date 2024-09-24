@@ -3,7 +3,7 @@ from django.contrib.auth import models as auth_models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from library.common.validators import MaxFileSizeValidator
+from library.core.validators import MaxFileSizeValidator
 from library.lb_accounts.managers import LibraryUserManager
 
 
@@ -87,18 +87,31 @@ class LibraryProfile(models.Model):
         blank=True,
     )
 
+    profile_picture = models.ImageField(
+        upload_to='profile_photos/',
+        null=True,
+        blank=True,
+        validators=[MaxFileSizeValidator(10 * 1024 * 1024)],
+        verbose_name='Profile Picture'
+    )
+
+    saved_items = models.ManyToManyField(
+        'lb_collections.Item',
+        blank=True,
+        related_name='library_profile_saved_items'
+    )
+
+    saved_events = models.ManyToManyField(
+        'lb_events.Event',
+        blank=True,
+        related_name='library_profile_saved_events'
+    )
+
     user = models.OneToOneField(
         LibraryUser,
         primary_key=True,
         on_delete=models.CASCADE,
         unique=True,
-    )
-
-    profile_picture = models.ImageField(
-        upload_to='profile_photos/',
-        null=True,
-        blank=True,
-        validators=[MaxFileSizeValidator(10 * 1024 * 1024)]
     )
 
     def __str__(self):
