@@ -1,5 +1,27 @@
-<form action="{% url 'item edit' pk=object.pk slug=object.slug %}" method="post">
-    {{ form }}
-    <button class="login-btn" type="submit">Edit</button>
-    {% csrf_token %}>
-</form>
+{% extends 'base.html' %}
+{% load static %}
+
+<div class="hero-image">
+    {% block hero_image %}
+        <img src="{% static 'images/hiker-reading-book-in-mountain.jpg' %}" alt="Nav Image">
+        <h1 class="navbar-title">Create a New Item</h1>
+    {% endblock %}
+</div>
+
+{% block main_content %}
+<div class="item-create-form-container">
+    <div class="item-create-form-section">
+        <h2 class="item-create-form-title">Edit Item</h2>
+        <form action="{% url 'item edit' pk=object.pk slug=object.slug %}" method="post" enctype="multipart/form-data" class="item-create-form">
+            {% csrf_token %}
+            <div class="item-create-form-group">
+                {{ form }}
+            </div>
+            <button type="submit" class="item-create-submit-button">Edit Item</button>
+        </form>
+    </div>
+    <div class="item-create-image-section">
+        <img src="{{ object.item_image.url }}" alt="{{ object.title }} image" class="item-create-book-image">
+    </div>
+</div>
+{% endblock %}
