@@ -18,15 +18,15 @@
         <div class="item-details-info">
             <h2 class="item-details-title">{{ object.title }}</h2>
             <div class="item-details-description">
-                Author: {{ object.author.name }}<br>
-                Genre: {{ object.genre }}<br>
-                Publication Date: {{ object.publication_date|date:"F j, Y" }}<br>
-                ISBN: {{ object.isbn }}<br>
-                Read a Sample: {{ object.sample}}
+                <strong>Author:</strong> {{ object.author.name }}<br>
+                <strong>Genre:</strong> {{ object.genre }}<br>
+                <strong>Publication Date:</strong> {{ object.publication_date|date:"F j, Y" }}<br>
+                <strong>ISBN:</strong> {{ object.isbn }}<br>
+                <strong>Read a Sample:</strong> {{ object.sample}}
             </div>
 
             <div class="item-details-action-buttons">
-                <a href="#" class="item-details-edit">Edit</a>
+                <a href="{% url 'item edit' pk=object.pk slug=object.slug%}" class="item-details-edit">Edit</a>
                 <a href="#" class="item-details-remove">Delete</a>
             </div>
         </div>
