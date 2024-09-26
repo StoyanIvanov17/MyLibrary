@@ -24,5 +24,3 @@ class LibraryProfileForm(forms.ModelForm):
     class Meta:
         model = LibraryProfile
         fields = ['first_name', 'last_name', 'address', 'phone_number', 'city']
-
-

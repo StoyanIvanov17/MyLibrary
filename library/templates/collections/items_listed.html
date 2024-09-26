@@ -4,12 +4,23 @@
 <div class="hero-image">
     {% block hero_image %}
         <img src="{% static 'images/background_collections.png' %}" alt="Nav Image">
-        <h1 class="navbar-title">Welcome to our library</h1>
     {% endblock %}
 </div>
 
 {% block main_content %}
-    {% for item in items %}
-        <a href="{% url 'item detail' pk=item.pk slug=item.slug %}">Details</a>
-    {% endfor %}
+    <h1 class="show-collection-title-main">BROWSE OUR COLLECTION</h1>
+    <div class="show-collection-container">
+        {% for item in items %}
+            <div class="show-collection-item">
+                <img src="{{ item.item_image.url }}" alt="{{ item.title }}" class="show-collection-image">
+                <div class="show-collection-overlay">
+                    <div class="show-collection-text">
+                        <h2 class="show-collection-title">{{ item.title }}</h2>
+                        <p class="show-collection-author">{{ item.author.name }}</p>
+                        <a href="{% url 'item detail' pk=item.pk slug=item.slug %}" class="show-collection-details-button">Details</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

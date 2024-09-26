@@ -4,7 +4,6 @@
 
 {% block hero_image %}
     <img src="{% static 'images/profile_bg.png' %}" alt="About Image">
-    <h1 class="navbar-title">This is your profile</h1>
 {% endblock %}
 
 {% block main_content %}
@@ -25,7 +24,6 @@
             <ul>
                 <li><a href="#">My Saved Items</a></li>
                 <li><a href="#">My Saved Events</a></li>
-                <li><a href="#">My Reviews</a></li>
                 <li><a href="{% url 'account edit' pk=object.pk %}">Edit Profile</a></li>
                 <li><a href="#">Delete Profile</a></li>
             </ul>
