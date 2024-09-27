@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<div class="hero-image">
-    {% block hero_image %}
-        <img src="{% static 'images/background_collections.png' %}" alt="Nav Image">
-    {% endblock %}
-</div>
+{% block hero_image %}
+    <img src="{% static 'images/background_collections.png' %}" alt="Nav Image">
+    <div class="hero-text">
+        <div class="hero-button" id="scroll-button">BROWSE OUR COLLECTION<i class="fas fa-arrow-down down-arrow"></i></div>
+    </div>
+{% endblock %}
 
 {% block main_content %}
-    <h1 class="show-collection-title-main">BROWSE OUR COLLECTION</h1>
+    <h1 class="show-collection-title-main">SOMETHING FOR EVERYBODY</h1>
     <div class="show-collection-container">
         {% for item in items %}
             <div class="show-collection-item">

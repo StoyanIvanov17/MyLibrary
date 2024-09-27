@@ -95,3 +95,19 @@
     border-radius: 5px; /* Add rounded corners */
     box-sizing: border-box; /* Include padding in width calculations */
 }
+.item-create-back-button {
+    width: 100%; /* Full width for button */
+    padding: 10px; /* Padding for button */
+    font-size: 1.2rem; /* Font size for button */
+    color: white; /* Text color */
+    background-color: #6c757d; /* Button background color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s; /* Transition for hover */
+    margin-bottom: 20px; /* Add margin between buttons */
+}
+
+.item-create-back-button:hover {
+    background-color: #5a6268; /* Darken button on hover */
+}
