@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Library</title>
 </head>
 <body>
@@ -36,11 +37,35 @@
     <div class="hero-image">
         {% block hero_image %}
             <img src="{% static 'images/hiker-reading-book-in-mountain.jpg' %}" alt="Nav Image">
+            <div class="hero-text">
+                <h1>A PLACE FOR EVERYBODY</h1>
+                <p>BOOKS & AUDIO BOOKS & DVDS & MAGAZINES</p>
+                <div class="hero-button" id="scroll-button">BEGIN<i class="fas fa-arrow-down down-arrow"></i></div>
+            </div>
         {% endblock %}
     </div>
     
-    {% block main_content %}
-    {% endblock %}
+    <div id="main-content">
+        {% block main_content %}
+        {% endblock %}
+    </div>
+    
+    <script>
+        document.getElementById('scroll-button').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default behavior (optional if it's not a link)
+            const target = document.getElementById('main-content');
+            const headerOffset = 50; // Offset to compensate for the navbar height
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    
+            // Custom smooth scroll function with reduced duration
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        });
+    </script>
+
     
     <script>
         window.addEventListener('scroll', function() {

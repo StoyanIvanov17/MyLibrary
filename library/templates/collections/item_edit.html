@@ -1,11 +1,5 @@
-{% extends 'base.html' %}
 {% load static %}
-
-<div class="hero-image">
-    {% block hero_image %}
-        <img src="{% static 'images/hiker-reading-book-in-mountain.jpg' %}" alt="Nav Image">
-    {% endblock %}
-</div>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
 {% block main_content %}
 <div class="item-create-form-container">
@@ -17,6 +11,7 @@
                 {{ form }}
             </div>
             <button type="submit" class="item-create-submit-button">Edit Item</button>
+            <button type="button" onclick="history.back()" class="item-create-back-button">Go Back</button>
         </form>
     </div>
     <div class="item-create-image-section">
