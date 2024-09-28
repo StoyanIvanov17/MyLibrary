@@ -17,7 +17,7 @@ class BookCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
     queryset = Item.objects.all()
     form_class = ItemCreateForm
     template_name = 'collections/item_create.html'
-    success_url = reverse_lazy('item collection')
+    success_url = reverse_lazy('item display')
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
@@ -32,7 +32,7 @@ def items_listed(request):
         'items': Item.objects.all(),
     }
 
-    return render(request, 'collections/items_listed.html', context)
+    return render(request, 'collections/item_display.html', context)
 
 
 class ItemDetailView(views.DetailView):
@@ -42,9 +42,9 @@ class ItemDetailView(views.DetailView):
 
 class ItemEditView(views.UpdateView):
     queryset = Item.objects.all()
-    template_name = 'collections/item_edit.html'
+    template_name = 'collections/item_update.html'
     form_class = ItemEditForm
-    success_url = reverse_lazy('item collection')
+    success_url = reverse_lazy('item display')
 
 
 @require_POST

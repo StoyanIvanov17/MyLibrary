@@ -76,7 +76,7 @@ class AccountDetailsView(views.DetailView):
 
 class AccountUpdateView(views.UpdateView):
     queryset = LibraryProfile.objects.all()
-    template_name = 'accounts/edit_account.html'
+    template_name = 'accounts/account_update.html'
     form_class = LibraryProfileForm
 
     def get_success_url(self):
