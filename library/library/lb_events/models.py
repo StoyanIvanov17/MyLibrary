@@ -25,20 +25,15 @@ class Event(models.Model):
         max_length=255
     )
 
-    is_online = models.BooleanField(
-        default=False
-    )
-
-    max_attendees = models.PositiveIntegerField(
-        null=True,
-        blank=True
+    age_group = models.TextField(
+        verbose_name='Age Group'
     )
 
     slug = models.SlugField(unique=True, blank=True)
 
     def save(self, *args, **kwargs):
         date_str = self.date.strftime('%Y-%B-%d')
-        slug_base = f"{self.name}-{date_str}-{self.location}"
+        slug_base = f"{self.name}-{date_str}-{self.location}-{self.age_group}"
         self.slug = slugify(slug_base)
         super().save(*args, **kwargs)
 
