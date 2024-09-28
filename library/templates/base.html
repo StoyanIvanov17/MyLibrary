@@ -16,7 +16,7 @@
                 <ul class="navbar-menu">
                     {% if user.is_superuser or user.is_staff %}
                         <li class="navbar-item"><a href="{% url 'item create' %}" class="navbar-link">Create Item</a></li>
-                        <li class="navbar-item"><a href="#" class="navbar-link">Create Event</a></li>
+                        <li class="navbar-item"><a href="{% url 'event create' %}" class="navbar-link">Create Event</a></li>
                     {% endif %}
                     <li class="navbar-item"><a href="{% url 'home page' %}" class="navbar-link">Home</a></li>
                     <li class="navbar-item"><a href="{% url 'account details' pk=user.pk %}" class="navbar-link">My Account</a></li>
