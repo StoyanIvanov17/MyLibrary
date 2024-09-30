@@ -163,3 +163,26 @@
     background: none; /* Ensure no background appears on hover */
     color: #ff4081; /* Retain the color on hover */
 }
+.save-profile-btn {
+    display: flex;
+    align-items: center;
+    background-color: #007bff; /* Background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    padding: 10px 15px; /* Adjusted padding */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1em; /* Adjust font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    max-width: 200px; /* Limit the button width */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.save-profile-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.heart-icon {
+    margin-left: 8px; /* Space between text and heart */
+    font-size: 1.5em; /* Heart size */
+    line-height: 1; /* Align heart icon with text */
+}
