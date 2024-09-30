@@ -27,18 +27,23 @@
                 <a href="#" id="open-sample-btn" class="item-details-sample-btn">READ A SAMPLE</a>
             </div>
 
-            <div class="item-details-action-buttons">
-                <a href="{% url 'item edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
-                <a href="#" class="item-details-remove">Delete</a>
-                <button id="save-item-btn" data-item-id="{{ object.id }}" class="heart-button">
-                    {% if object in request.user.libraryprofile.saved_items.all %}
-                        ❤️
-                    {% else %}
-                        🤍
-                    {% endif %}
-                </button>
-            </div>
-        </div>
+       <div class="item-details-action-buttons">
+           {% if user.is_superuser or user.is_staff %}
+               <a href="{% url 'item edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
+               <a href="#" class="item-details-remove">Delete</a>
+           {% endif %}
+           <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
+               SAVE TO PROFILE
+               <span class="heart-icon">
+                   {% if object in request.user.libraryprofile.saved_items.all %}
+                       ❤️
+                   {% else %}
+                       🤍
+                   {% endif %}
+               </span>
+           </button>
+       </div>
+       </div>
     </div>
 </section>
 
@@ -79,26 +84,33 @@
 
 <script>
     document.getElementById('save-item-btn').addEventListener('click', function(event) {
-        const itemId = this.getAttribute('data-item-id');
-        const itemSlug = '{{ object.slug }}'; // Get the slug from the object
+    const itemId = this.getAttribute('data-item-id');
+    const itemSlug = '{{ object.slug }}'; // Get the slug from the object
 
-        fetch(`/collections/${itemId}/${itemSlug}/save_item/`, { // Update the URL
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ item_id: itemId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Update the button's inner HTML based on the response
-            document.getElementById('save-item-btn').innerHTML = data.favorited ? '❤️' : '🤍';
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    fetch(`/collections/${itemId}/${itemSlug}/save_item/`, { // Update the URL
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ item_id: itemId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Update the heart icon based on the response, keeping the text
+        const heartIcon = document.querySelector('.heart-icon');
+
+        // Change the heart icon based on whether the item is favorited or not
+        if (data.favorited) {
+            heartIcon.innerHTML = '❤️'; // Filled heart for favorited
+        } else {
+            heartIcon.innerHTML = '🤍'; // Outline heart for not favorited
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
+});
 </script>
 
 {% endblock %}

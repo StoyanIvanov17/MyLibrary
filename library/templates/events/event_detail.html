@@ -1,10 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-</body>
-</html>
+<div class="hero-image">
+    {% block hero_image %}
+        <img src="{{ event.event_image.url }}" alt="Nav Image">
+        <div class="hero-text">
+            <div class="hero-button" id="scroll-button">ABOUT THE EVENT<i class="fas fa-arrow-down down-arrow"></i></div>
+        </div>
+    {% endblock %}
+</div>
+
+{% block main_content %}
+<div class="event-detail-container">
+    <div class="event-detail-content">
+         <div class="item-details-action-buttons">
+           {% if user.is_superuser or user.is_staff %}
+               <a href="{% url 'event edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
+               <a href="#" class="item-details-remove">Delete</a>
+           {% endif %}
+           <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
+               SAVE TO PROFILE
+               <span class="heart-icon">
+                   {% if object in request.user.libraryprofile.saved_events.all %}
+                       ❤️
+                   {% else %}
+                       🤍
+                   {% endif %}
+               </span>
+           </button>
+       </div>
+
+        <h1 class="event-detail-title">{{ event.name }}</h1>
+
+        <!-- Separator line -->
+        <hr class="event-detail-separator">
+
+        <div class="event-detail-info">
+            <p><strong>Date:</strong> {{ event.date }}</p>
+            <p><strong>Time:</strong> {{ event.time }}</p>
+            <p><strong>Location:</strong> {{ event.location }}</p>
+            <p><strong>Age Group:</strong> {{ event.age_group }}</p>
+        </div>
+
+        <div class="event-detail-description">
+            <p>{{ event.description }}</p>
+        </div>
+    </div>
+</div>
+    
+<script>
+    document.getElementById('save-item-btn').addEventListener('click', function(event) {
+        const itemId = this.getAttribute('data-item-id');
+        const itemSlug = '{{ object.slug }}'; // Get the slug from the object
+
+        fetch(`/events/${itemId}/${itemSlug}/save_event/`, { // Update the URL
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ item_id: itemId })
+        })
+        .then(response => response.json())
+        .then(data => {
+        // Update the heart icon based on the response, keeping the text
+        const heartIcon = document.querySelector('.heart-icon');
+
+        // Change the heart icon based on whether the item is favorited or not
+        if (data.favorited) {
+            heartIcon.innerHTML = '❤️'; // Filled heart for favorited
+        } else {
+            heartIcon.innerHTML = '🤍'; // Outline heart for not favorited
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+</script>
+    
+{% endblock %}

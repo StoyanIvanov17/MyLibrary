@@ -21,7 +21,7 @@
                     <li class="navbar-item"><a href="{% url 'home page' %}" class="navbar-link">Home</a></li>
                     <li class="navbar-item"><a href="{% url 'account details' pk=user.pk %}" class="navbar-link">My Account</a></li>
                     <li class="navbar-item"><a href="{% url 'item display' %}" class="navbar-link">Collections</a></li>
-                    <li class="navbar-item"><a href="#" class="navbar-link">Events</a></li>
+                    <li class="navbar-item"><a href="{% url 'event display' %}" class="navbar-link">Events</a></li>
                     <li class="navbar-item"><a href="#" class="navbar-link">About</a></li>
                     <li class="navbar-item"><a href="{% url 'signout user' %}" class="navbar-link">Log out</a></li>
                 </ul>

@@ -5,7 +5,7 @@
 <div class="item-create-form-container">
     <div class="item-create-form-section">
         <h2 class="item-create-form-title">Edit Event</h2>
-        <form action="{% url 'item edit' pk=object.pk slug=object.slug %}" method="post" enctype="multipart/form-data" class="item-create-form">
+        <form action="{% url 'event edit' pk=object.pk slug=object.slug %}" method="post" enctype="multipart/form-data" class="item-create-form">
             {% csrf_token %}
             <div class="item-create-form-group">
                 {{ form }}
@@ -15,7 +15,7 @@
         </form>
     </div>
     <div class="item-create-image-section">
-        <img src="{{ object.item_image.url }}" alt="{{ object.title }} image" class="item-create-book-image">
+        <img src="{{ object.event_image.url }}" alt="{{ object.title }} image" class="item-create-book-image">
     </div>
 </div>
 {% endblock %}
