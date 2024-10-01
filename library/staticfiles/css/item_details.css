@@ -19,15 +19,6 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.item-details-left {
-    flex: 1;
-    padding-right: 20px;
-}
-
-.item-details-right {
-    flex: 2;
-}
-
 .item-details-cover {
     flex: 1;
     padding: 20px;
@@ -65,10 +56,13 @@
 }
 
 .item-details-action-buttons a {
-    text-decoration: none;
-    padding: 10px 15px;
-    margin-right: 10px;
+    display: inline-block;
+    padding: 8px 30px;
     border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.1em;
+    margin-top: 10px;
+    text-align: center;
 }
 
 .item-details-edit {
@@ -134,6 +128,7 @@
     text-decoration: none;
     cursor: pointer;
 }
+
 .sample-text {
     padding: 15px;
     background-color: #f0f0f0; /* Light background for better contrast */
@@ -148,21 +143,7 @@
 .modal-content h2 {
     margin-bottom: 15px; /* Space below the title */
 }
-.heart-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 2em;
-    color: #ff4081;
-    outline: none;
-    margin-left: 10px; /* Adjust for spacing */
-}
 
-.heart-button:hover,
-.heart-button:focus {
-    background: none; /* Ensure no background appears on hover */
-    color: #ff4081; /* Retain the color on hover */
-}
 .save-profile-btn {
     display: flex;
     align-items: center;
@@ -185,4 +166,32 @@
     margin-left: 8px; /* Space between text and heart */
     font-size: 1.5em; /* Heart size */
     line-height: 1; /* Align heart icon with text */
+}
+
+.delete-action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.confirm-delete {
+    background-color: #f44336; /* Red background */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-delete {
+    background-color: #aaa; /* Grey background */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-delete:hover, .cancel-delete:hover {
+    opacity: 0.9;
 }
