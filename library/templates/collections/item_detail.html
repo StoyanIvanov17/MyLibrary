@@ -4,7 +4,7 @@
 <div class="hero-image">
     {% block hero_image %}
         <img src="{% static 'images/candle-inscription-books-compass.jpg' %}" alt="Nav Image">
-                <div class="hero-text">
+        <div class="hero-text">
             <div class="hero-button" id="scroll-button">ABOUT THE ITEM<i class="fas fa-arrow-down down-arrow"></i></div>
         </div>
     {% endblock %}
@@ -24,26 +24,36 @@
                 <strong>Genre:</strong> {{ object.genre }}<br>
                 <strong>Publication Date:</strong> {{ object.publication_date|date:"F j, Y" }}<br>
                 <strong>ISBN:</strong> {{ object.isbn }}<br>
-                <a href="#" id="open-sample-btn" class="item-details-sample-btn">READ A SAMPLE</a>
             </div>
 
-       <div class="item-details-action-buttons">
-           {% if user.is_superuser or user.is_staff %}
-               <a href="{% url 'item edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
-               <a href="#" class="item-details-remove">Delete</a>
-           {% endif %}
-           <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
-               SAVE TO PROFILE
-               <span class="heart-icon">
-                   {% if object in request.user.libraryprofile.saved_items.all %}
-                       ❤️
-                   {% else %}
-                       🤍
-                   {% endif %}
-               </span>
-           </button>
-       </div>
-       </div>
+            <div class="item-details-action-buttons">
+                <a href="#" id="open-sample-btn" class="item-details-sample-btn">READ A SAMPLE</a>
+                
+                <div class="admin-action-buttons">
+                    {% if user.is_superuser or user.is_staff %}
+                        <a href="{% url 'item edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
+                        <a href="#" id="delete-item-btn" class="item-details-remove">Delete</a>                
+                    {% endif %}
+                </div>
+
+                <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
+                    <span class="save-text">
+                        {% if object in request.user.libraryprofile.saved_items.all %}
+                            SAVED
+                        {% else %}
+                            SAVE TO PROFILE
+                        {% endif %}
+                    </span>
+                    <span class="heart-icon">
+                        {% if object in request.user.libraryprofile.saved_items.all %}
+                            ❤️
+                        {% else %}
+                            🤍
+                        {% endif %}
+                    </span>
+                </button>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -56,61 +66,108 @@
         </div>
     </div>
 </div>
+    
+<div id="delete-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Delete {{ object.title }}?</h2>
+        <p>Are you sure you want to delete this item?</p>
+        <div class="delete-action-buttons">
+            <button id="confirm-delete-btn" class="confirm-delete">Yes, Delete</button>
+            <button id="cancel-delete-btn" class="cancel-delete">Cancel</button>
+        </div>
+    </div>
+</div>
 
 <script>
-    // Get modal element
-    const modal = document.getElementById("sample-modal");
-    const btn = document.getElementById("open-sample-btn");
-    const span = document.getElementsByClassName("close-btn")[0];
+    document.addEventListener("DOMContentLoaded", function() {
+        const sampleModal = document.getElementById("sample-modal");
+        const openSampleBtn = document.getElementById("open-sample-btn");
+        const closeBtns = document.getElementsByClassName("close-btn");
+        
+        const deleteModal = document.getElementById("delete-modal");
+        const deleteBtn = document.getElementById("delete-item-btn");
+        const cancelDeleteBtn = document.getElementById("cancel-delete-btn");
+        const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
 
-    // Open the modal
-    btn.onclick = function(event) {
-        event.preventDefault(); // Prevent default link behavior
-        modal.style.display = "block";
-    }
-
-    // Close the modal when clicking the close button
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // Close the modal when clicking outside of it
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
+        function openModal(modal) {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Disable scrolling when modal is open
         }
-    }
+        
+        function closeModal(modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling when modal is closed
+        }
+
+        // Open sample modal
+        openSampleBtn.onclick = function(event) {
+            event.preventDefault();
+            openModal(sampleModal);
+        }
+
+        // Open delete modal if button exists
+        if (deleteBtn) {
+            deleteBtn.onclick = function(event) {
+                event.preventDefault();
+                openModal(deleteModal);
+            }
+        }
+
+        // Close modals using the close buttons
+        Array.from(closeBtns).forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                closeModal(sampleModal); // Close the sample modal
+                closeModal(deleteModal); // Close the delete modal
+            }
+        });
+
+        // Close modals on cancel
+        cancelDeleteBtn.onclick = function() {
+            closeModal(deleteModal);
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target === sampleModal) {
+                closeModal(sampleModal);
+            } else if (event.target === deleteModal) {
+                closeModal(deleteModal);
+            }
+        }
+    });
 </script>
 
 <script>
     document.getElementById('save-item-btn').addEventListener('click', function(event) {
-    const itemId = this.getAttribute('data-item-id');
-    const itemSlug = '{{ object.slug }}'; // Get the slug from the object
+        const itemId = this.getAttribute('data-item-id');
+        const itemSlug = '{{ object.slug }}'; 
+        const saveText = this.querySelector('.save-text');
 
-    fetch(`/collections/${itemId}/${itemSlug}/save_item/`, { // Update the URL
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ item_id: itemId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Update the heart icon based on the response, keeping the text
-        const heartIcon = document.querySelector('.heart-icon');
+        fetch(`/collections/${itemId}/${itemSlug}/save_item/`, { 
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ item_id: itemId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const heartIcon = this.querySelector('.heart-icon');
 
-        // Change the heart icon based on whether the item is favorited or not
-        if (data.favorited) {
-            heartIcon.innerHTML = '❤️'; // Filled heart for favorited
-        } else {
-            heartIcon.innerHTML = '🤍'; // Outline heart for not favorited
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
+            if (data.favorited) {
+                heartIcon.innerHTML = '❤️'; 
+                saveText.innerHTML = 'SAVED';
+            } else {
+                heartIcon.innerHTML = '🤍'; 
+                saveText.innerHTML = 'SAVE TO PROFILE';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
-});
 </script>
 
 {% endblock %}

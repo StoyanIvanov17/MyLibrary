@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.views.decorators.http import require_POST
 
@@ -52,6 +52,11 @@ class EventEditView(views.UpdateView):
             'pk': self.object.pk,
             'slug': self.object.slug
         })
+
+
+class EventDeleteView(views.DeleteView):
+    queryset = Event.objects.all()
+    success_url = reverse_lazy('event display')
 
 
 @require_POST

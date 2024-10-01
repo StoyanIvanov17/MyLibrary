@@ -47,12 +47,16 @@ class ItemEditView(views.UpdateView):
     success_url = reverse_lazy('item display')
 
 
+class ItemDeleteView(views.DeleteView):
+    queryset = Item.objects.all()
+    success_url = reverse_lazy('item display')
+
+
 @require_POST
 def save_item_view(request, pk, slug):
-    item = get_object_or_404(Item, pk=pk)  # Get the item based on the primary key
-    user_profile = request.user.libraryprofile  # Access the user's profile
+    item = get_object_or_404(Item, pk=pk)
+    user_profile = request.user.libraryprofile
 
-    # Toggle favorite status
     if item in user_profile.saved_items.all():
         user_profile.saved_items.remove(item)
         favorited = False
