@@ -57,16 +57,23 @@
     </div>
 </section>
 
+<!-- Sample Modal with Pagination -->
 <div id="sample-modal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h2>{{ object.title }} - Sample</h2>
-        <div class="sample-text">
-            <p>{{ object.sample }}</p>
+        <div class="sample-text" id="sample-text-container">
+            <!-- Sample text pages will be inserted here -->
+        </div>
+        <div class="pagination-controls">
+            <button id="prev-page-btn" class="prev-page" disabled>Previous</button>
+            <span id="current-page">Page 1</span>
+            <button id="next-page-btn" class="next-page">Next</button>
         </div>
     </div>
 </div>
-    
+
+<!-- Delete Modal -->
 <div id="delete-modal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
@@ -79,95 +86,105 @@
     </div>
 </div>
 
+<!-- JavaScript -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const sampleModal = document.getElementById("sample-modal");
         const openSampleBtn = document.getElementById("open-sample-btn");
         const closeBtns = document.getElementsByClassName("close-btn");
-        
-        const deleteModal = document.getElementById("delete-modal");
-        const deleteBtn = document.getElementById("delete-item-btn");
-        const cancelDeleteBtn = document.getElementById("cancel-delete-btn");
-        const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+        const sampleTextContainer = document.getElementById("sample-text-container");
+        const sampleText = `{{ object.sample|escapejs }}`; // Escape the sample text for JavaScript
+        const pageSize = 500; // Adjust the number of characters per page as needed
+        let pages = [];
+        let currentPage = 0;
 
-        function openModal(modal) {
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Disable scrolling when modal is open
+        // Split the sample text into pages
+        function paginateSampleText(text, pageSize) {
+            let words = text.split(' ');
+            let pagesArray = [];
+            let currentPageText = '';
+
+            words.forEach(word => {
+                if ((currentPageText + word + ' ').length > pageSize) {
+                    pagesArray.push(currentPageText.trim());
+                    currentPageText = word + ' ';
+                } else {
+                    currentPageText += word + ' ';
+                }
+            });
+
+            if (currentPageText.trim().length > 0) {
+                pagesArray.push(currentPageText.trim());
+            }
+
+            return pagesArray;
         }
         
-        function closeModal(modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Re-enable scrolling when modal is closed
+        function updateSampleText() {
+            sampleTextContainer.innerHTML = `<p>${pages[currentPage]}</p>`;
+            document.getElementById("current-page").textContent = `Page ${currentPage + 1} of ${pages.length}`;
+            document.getElementById("prev-page-btn").disabled = currentPage === 0;
+            document.getElementById("next-page-btn").disabled = currentPage === pages.length - 1;
         }
 
-        // Open sample modal
-        openSampleBtn.onclick = function(event) {
+        function openSampleModal(event) {
             event.preventDefault();
+            pages = paginateSampleText(sampleText, pageSize);
+            currentPage = 0;
+            updateSampleText();
             openModal(sampleModal);
         }
 
-        // Open delete modal if button exists
-        if (deleteBtn) {
-            deleteBtn.onclick = function(event) {
-                event.preventDefault();
-                openModal(deleteModal);
+        document.getElementById("prev-page-btn").addEventListener("click", function() {
+            if (currentPage > 0) {
+                currentPage--;
+                updateSampleText();
             }
-        }
+        });
 
-        // Close modals using the close buttons
-        Array.from(closeBtns).forEach(closeBtn => {
+        document.getElementById("next-page-btn").addEventListener("click", function() {
+            if (currentPage < pages.length - 1) {
+                currentPage++;
+                updateSampleText();
+            }
+        });
+
+        openSampleBtn.addEventListener("click", openSampleModal);
+
+        // Close modal functionality
+        for (const closeBtn of closeBtns) {
             closeBtn.onclick = function() {
-                closeModal(sampleModal); // Close the sample modal
-                closeModal(deleteModal); // Close the delete modal
-            }
-        });
-
-        // Close modals on cancel
-        cancelDeleteBtn.onclick = function() {
-            closeModal(deleteModal);
+                sampleModal.style.display = "none";
+                document.getElementById("delete-modal").style.display = "none"; // Ensure delete modal closes
+            };
         }
 
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            if (event.target === sampleModal) {
-                closeModal(sampleModal);
-            } else if (event.target === deleteModal) {
-                closeModal(deleteModal);
-            }
-        }
-    });
-</script>
+        document.getElementById("delete-item-btn").addEventListener("click", function() {
+            document.getElementById("delete-modal").style.display = "block";
+        });
 
-<script>
-    document.getElementById('save-item-btn').addEventListener('click', function(event) {
-        const itemId = this.getAttribute('data-item-id');
-        const itemSlug = '{{ object.slug }}'; 
-        const saveText = this.querySelector('.save-text');
+        document.getElementById("confirm-delete-btn").addEventListener("click", function() {
+            sampleModal.style.display = "none";
+        });
 
-        fetch(`/collections/${itemId}/${itemSlug}/save_item/`, { 
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ item_id: itemId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const heartIcon = this.querySelector('.heart-icon');
-
-            if (data.favorited) {
-                heartIcon.innerHTML = '❤️'; 
-                saveText.innerHTML = 'SAVED';
-            } else {
-                heartIcon.innerHTML = '🤍'; 
-                saveText.innerHTML = 'SAVE TO PROFILE';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+        document.getElementById("cancel-delete-btn").addEventListener("click", function() {
+            document.getElementById("delete-modal").style.display = "none"; // Close the delete modal
         });
     });
-</script>
 
+    // Function to open a modal
+    function openModal(modal) {
+        modal.style.display = "block";
+    }
+
+    // Close modal on window click
+    window.onclick = function(event) {
+        const modals = document.getElementsByClassName("modal");
+        for (let i = 0; i < modals.length; i++) {
+            if (event.target === modals[i]) {
+                modals[i].style.display = "none";
+            }
+        }
+    };
+</script>
 {% endblock %}
