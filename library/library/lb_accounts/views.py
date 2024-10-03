@@ -8,6 +8,7 @@ from django.contrib.auth import views as auth_views, login, logout, authenticate
 from library.lb_accounts.forms import LibraryUserCreationForm, LibraryProfileForm
 from library.lb_accounts.models import LibraryProfile
 from library.lb_accounts.utils.library_card_number_generator import generate_library_card_number
+from library.lb_collections.models import Item
 
 
 class SignInUserView(auth_views.LoginView):
@@ -23,9 +24,6 @@ class SignInUserView(auth_views.LoginView):
         return super().get_success_url()
 
 
-from django.core.exceptions import ValidationError
-
-
 class SignUpUserView(views.CreateView):
     template_name = 'accounts/signup_user.html'
     form_class = LibraryUserCreationForm
@@ -36,7 +34,6 @@ class SignUpUserView(views.CreateView):
         user.library_card_number = generate_library_card_number()
         user.save()
 
-        # Create the profile here, without using get_or_create
         try:
             profile = LibraryProfile.objects.create(
                 user=user,
@@ -72,6 +69,13 @@ def signout_user(request):
 class AccountDetailsView(views.DetailView):
     queryset = LibraryProfile.objects.all()
     template_name = 'accounts/account_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()  # current profile
+        context['saved_items'] = profile.saved_items.all()
+        context['saved_events'] = profile.saved_events.all()
+        return context
 
 
 class AccountUpdateView(views.UpdateView):

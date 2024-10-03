@@ -195,3 +195,32 @@
 .confirm-delete:hover, .cancel-delete:hover {
     opacity: 0.9;
 }
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    gap: 20px; /* Adds consistent spacing between elements */
+}
+
+.pagination-controls button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.pagination-controls #current-page {
+    font-size: 1.2em;
+    text-align: center;
+    white-space: nowrap; /* Keeps the text on a single line */
+    line-height: 1; /* Ensures proper vertical alignment */
+}

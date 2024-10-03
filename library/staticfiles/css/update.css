@@ -1,69 +1,108 @@
-/* Edit Account Section */
-.edit-account-wrapper {
+/* Profile Section Styling */
+.profile-wrapper {
     display: flex;
-    justify-content: center; /* Center the main content horizontally */
-    align-items: center; /* Center the main content vertically */
-    height: calc(100vh - 100px); /* Adjust based on header/footer height */
-    background-color: #f5f5f5;
+    padding: 20px;
 }
 
-/* Main content styling */
-.main-content {
+.profile-sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ccc;
+}
+
+.profile-info img.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.profile-details p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.profile-sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-sidebar-nav ul li {
+    margin: 10px 0;
+}
+
+.profile-sidebar-nav ul li a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.profile-main-content {
+    flex-grow: 1;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.saved-items, .saved-events {
+    grid-column: span 3;
+    text-align: center;
+}
+
+.profile-item, .profile-event {
     background-color: #fff;
-    padding: 40px;
+    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    width: 400px; /* Set a width for the form container */
-    text-align: center; /* Center text in the form */
-}
-
-.main-content h1 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-}
-
-/* Form styling */
-.edit-form {
-    display: flex;
-    flex-direction: column; /* Stack form elements vertically */
-}
-
-.edit-form p {
-    margin-bottom: 15px;
-    font-size: 16px;
-}
-
-/* Input fields */
-.edit-form input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    font-size: 16px; /* Increase font size */
-}
-
-.edit-form input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-/* Submit button */
-.submit-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    width: 100%; /* Full-width button */
+    transition: box-shadow 0.3s;
 }
 
-.submit-btn:hover {
-    background-color: #0056b3;
+.profile-item:hover, .profile-event:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.profile-modal-image {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.profile-modal-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.profile-modal-description {
+    font-size: 16px;
 }

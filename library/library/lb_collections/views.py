@@ -27,12 +27,19 @@ class BookCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
         return form
 
 
-def items_listed(request):
-    context = {
-        'items': Item.objects.all(),
-    }
+class ItemListView(views.ListView):
+    queryset = Item.objects.all()
+    template_name = 'collections/item_display.html'
 
-    return render(request, 'collections/item_display.html', context)
+    def get_queryset(self):
+        return Item.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['items'] = Item.objects.all()
+
+        return context
 
 
 class ItemDetailView(views.DetailView):
