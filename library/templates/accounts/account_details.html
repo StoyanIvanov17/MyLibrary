@@ -24,22 +24,21 @@
                 <p>{{ object.city }}</p>
             </div>
         </div>
-        <nav class="profile-sidebar-nav">
+        <nav class="sidebar-nav">
             <ul>
                 <li><a href="{% url 'account edit' pk=object.pk %}">Edit Profile</a></li>
                 <li><a href="#">Delete Profile</a></li>
             </ul>
         </nav>
     </aside>
-    
+
     <!-- Main Content Section for Saved Items and Events -->
     <section class="profile-main-content">
         <div class="saved-items">
             <h1>My Saved Items</h1>
             {% for item in saved_items %}
-                <div class="profile-item" data-item-id="{{ item.id }}" data-item-title="{{ item.title }}" 
-                     data-item-image="{{ item.item_image.url }}" 
-                     data-item-description="{% url 'item detail' pk=item.pk slug=item.slug %}">
+                <div class="profile-item" 
+                    data-item="{{ item.id }}|{{ item.title }}|{% url 'item detail' pk=item.pk slug=item.slug %}|{{ item.item_image.url }}">
                     <p>{{ item.title }}</p>
                 </div>
             {% endfor %}
@@ -47,26 +46,27 @@
         <div class="saved-events">
             <h1>My Saved Events</h1>
             {% for event in saved_events %}
-                <div class="profile-event" data-event-id="{{ event.id }}" data-event-title="{{ event.name }}" 
-                     data-event-image="{{ event.event_image.url }}" 
-                     data-event-description="{% url 'event detail' pk=event.pk slug=event.slug %}">
+                <div class="profile-event" 
+                    data-event="{{ event.id }}|{{ event.name }}|{% url 'event detail' pk=event.pk slug=event.slug %}|{{ event.event_image.url }}">
                     <p>{{ event.name }}</p>
                 </div>
             {% endfor %}
         </div>
     </section>
-    
+
     <!-- Modal for Displaying Item/Event Details -->
     <div id="profile-modal" class="profile-modal">
         <div class="profile-modal-content">
             <span class="profile-close">&times;</span>
-            <img src="{{ object.image_url.url }}" alt="Item/Event Image" class="profile-modal-image">
+            <img src="" alt="Item/Event Image" class="profile-modal-image">
             <h2 class="profile-modal-title"></h2>
-            <p class="profile-modal-description"></p>
+            <a href="#" class="profile-modal-link">
+                <button>View Details</button>
+            </a>
         </div>
     </div>
 </div>
-    
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const items = document.querySelectorAll('.profile-item');
@@ -75,33 +75,29 @@
         const closeBtn = document.querySelector('.profile-close');
         const modalImage = document.querySelector('.profile-modal-image');
         const modalTitle = document.querySelector('.profile-modal-title');
-        const modalDescription = document.querySelector('.profile-modal-description');
+        const modalLink = document.querySelector('.profile-modal-link');
 
         // Function to open modal
-        function openModal(title, image, description) {
+        function openModal(title, image, link) {
             modal.style.display = "flex";
             modalTitle.textContent = title;
             modalImage.src = image;
-            modalDescription.textContent = description;
+            modalLink.href = link;
         }
 
         // Add click event to each item
         items.forEach(item => {
             item.addEventListener('click', function () {
-                const title = item.dataset.itemTitle;
-                const image = item.dataset.itemImage;  // Use the actual image path here
-                const description = item.dataset.itemDescription;
-                openModal(title, image, description);
+                const [id, title, link, image] = item.dataset.item.split('|');
+                openModal(title, image, link);
             });
         });
 
         // Add click event to each event
         events.forEach(event => {
             event.addEventListener('click', function () {
-                const title = event.dataset.eventTitle;
-                const image = event.dataset.eventImage;  // Use the actual image path here
-                const description = event.dataset.eventDescription;
-                openModal(title, image, description);
+                const [id, title, link, image] = event.dataset.event.split('|');
+                openModal(title, image, link);
             });
         });
 
