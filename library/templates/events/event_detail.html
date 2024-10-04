@@ -19,14 +19,14 @@
                <a href="#" id="delete-item-btn" class="item-details-remove">Delete</a>           {% endif %}
            <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
                <span class="save-text">
-                   {% if object in request.user.libraryprofile.saved_items.all %}
+                   {% if object in request.user.libraryprofile.saved_events.all %}
                        SAVED
                    {% else %}
                        SAVE TO PROFILE
                    {% endif %}
                </span>
                <span class="heart-icon">
-                   {% if object in request.user.libraryprofile.saved_items.all %}
+                   {% if object in request.user.libraryprofile.saved_events.all %}
                        ❤️
                    {% else %}
                        🤍

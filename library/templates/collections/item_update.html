@@ -1,7 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
-{% block main_content %}
 <div class="item-create-form-container">
     <div class="item-create-form-section">
         <h2 class="item-create-form-title">Edit Item</h2>
@@ -18,4 +17,3 @@
         <img src="{{ object.item_image.url }}" alt="{{ object.title }} image" class="item-create-book-image">
     </div>
 </div>
-{% endblock %}

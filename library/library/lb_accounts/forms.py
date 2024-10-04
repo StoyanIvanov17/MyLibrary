@@ -23,4 +23,8 @@ class LibraryChangeForm(auth_forms.UserChangeForm):
 class LibraryProfileForm(forms.ModelForm):
     class Meta:
         model = LibraryProfile
-        fields = ['first_name', 'last_name', 'address', 'phone_number', 'city']
+        fields = ['first_name', 'last_name', 'address', 'phone_number', 'city', 'profile_picture']
+
+        widgets = {
+            'profile_picture': forms.FileInput(attrs={'placeholder': 'Profile Picture'}),
+        }
