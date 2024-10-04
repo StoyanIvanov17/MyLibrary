@@ -3,12 +3,11 @@ from django.db import IntegrityError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
-from django.contrib.auth import views as auth_views, login, logout, authenticate
+from django.contrib.auth import views as auth_views, login, logout
 
 from library.lb_accounts.forms import LibraryUserCreationForm, LibraryProfileForm
 from library.lb_accounts.models import LibraryProfile
 from library.lb_accounts.utils.library_card_number_generator import generate_library_card_number
-from library.lb_collections.models import Item
 
 
 class SignInUserView(auth_views.LoginView):
@@ -16,11 +15,11 @@ class SignInUserView(auth_views.LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        # Redirect to the user's profile page after login
+
         user = self.request.user
         if user.is_authenticated and hasattr(user, 'libraryprofile'):
             return reverse("account details", kwargs={"pk": user.libraryprofile.pk})
-        # Optionally, you can set a default URL if there's no profile
+
         return super().get_success_url()
 
 
@@ -37,13 +36,17 @@ class SignUpUserView(views.CreateView):
         try:
             profile = LibraryProfile.objects.create(
                 user=user,
-                email=user.email,  # Use the user's email for the profile
+                email=user.email,
             )
-            login(self.request, user)  # Log the user in if the profile is created
-            return redirect('registration profile')  # Redirect to the profile creation form
+            login(self.request, user)
+            return redirect('registration profile')
         except IntegrityError:
-            # If there’s an integrity error, handle it here (e.g., log it or redirect)
-            return redirect('account details')  # Redirect or handle the error as needed
+
+            try:
+                profile = LibraryProfile.objects.get(user=user)
+                return redirect('account details', pk=profile.pk)
+            except LibraryProfile.DoesNotExist:
+                return redirect('home page')
 
 
 class LibraryProfileCreateView(LoginRequiredMixin, views.UpdateView):

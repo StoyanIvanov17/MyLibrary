@@ -15,19 +15,27 @@
     <!-- Sidebar with Profile Info -->
     <aside class="profile-sidebar">
         <div class="profile-info">
-            <img src="{% static 'images/librarian.jpg' %}" alt="Profile Picture" class="profile-pic">
-            <div class="profile-details">
-                <p>{{ user.email }}</p>
-                <p>{{ object.first_name }} {{ object.last_name }}</p>
-                <p>{{ object.phone_number }}</p>
-                <p>{{ object.address }}</p>
-                <p>{{ object.city }}</p>
-            </div>
+            {% if object.profile_picture %}
+                <img src="{{ object.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+            {% endif %}
+                <div class="profile-details">
+                    {% if object.first_name %}
+                        <p>{{ user.email }}</p>
+                        <p>{{ object.first_name }} {{ object.last_name }}</p>
+                        <p>{{ object.phone_number }}</p>
+                        <p>{{ object.address }}</p>
+                        <p>{{ object.city }}</p>
+                    {% endif %}
+                </div>
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="{% url 'account edit' pk=object.pk %}">Edit Profile</a></li>
-                <li><a href="#">Delete Profile</a></li>
+                {% if object.first_name %}
+                    <li><a href="{% url 'account edit' pk=object.pk %}">Edit Profile</a></li>
+                    <li><a href="#">Delete Profile</a></li>
+                {% else %}
+                    <li><a href="{% url 'registration profile' %}">Finish Your Profile</a></li>
+                {% endif %}
             </ul>
         </nav>
     </aside>

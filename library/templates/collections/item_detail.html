@@ -86,7 +86,6 @@
     </div>
 </div>
 
-<!-- JavaScript -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const sampleModal = document.getElementById("sample-modal");
@@ -186,5 +185,37 @@
             }
         }
     };
+</script>
+    
+<script>
+    document.getElementById('save-item-btn').addEventListener('click', function(event) {
+        const itemId = this.getAttribute('data-item-id');
+        const itemSlug = '{{ object.slug }}'; 
+        const saveText = this.querySelector('.save-text');
+
+        fetch(`/collections/${itemId}/${itemSlug}/save_item/`, { 
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ item_id: itemId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const heartIcon = this.querySelector('.heart-icon');
+
+            if (data.favorited) {
+                heartIcon.innerHTML = '❤️'; 
+                saveText.innerHTML = 'SAVED';
+            } else {
+                heartIcon.innerHTML = '🤍'; 
+                saveText.innerHTML = 'SAVE TO PROFILE';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
 </script>
 {% endblock %}

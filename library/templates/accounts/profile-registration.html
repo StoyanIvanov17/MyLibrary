@@ -12,15 +12,46 @@
     <div class="log_reg_body_overlay"></div>
     <div class="log_reg_body_register">
         <h1 class="log_reg_body_h1">Complete Your Profile</h1>
-        <form action="{% url 'registration profile' %}" method="POST" class="log_reg_form">
+        <form action="{% url 'registration profile' %}" method="POST" class="log_reg_form" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.first_name|placeholder:'First Name' }}
             {{ form.last_name|placeholder:'Last Name' }}
             {{ form.address|placeholder:'Address' }}
             {{ form.phone_number|placeholder:'Phone Number' }}
             {{ form.city|placeholder:'City' }}
+            
+            <label for="profile_picture" class="custom-file-label">
+                <i class="fas fa-upload"></i> Upload Profile Picture
+            </label>
+            <input type="file" id="profile_picture" name="profile_picture" class="form-control">
+            
+{#            <div id="imagePreview" class="image-preview"></div>#}
+            
             <button type="submit">Save Profile</button>
+            <button type="button" onclick="window.location.href='{% url 'account details' pk=object.pk %}'" 
+                    class="item-create-back-button">Skip for now</button>
+
         </form>
     </div>
+{##}
+{#<script>#}
+{#    document.querySelector('input[type="file"]').addEventListener('change', function(event) {#}
+{#    const input = event.target;#}
+{#    const imagePreview = document.getElementById('imagePreview');#}
+{#    #}
+{#    if (input.files && input.files[0]) {#}
+{#        const reader = new FileReader();#}
+{#        #}
+{#        reader.onload = function(e) {#}
+{#            // Show image preview#}
+{#            imagePreview.style.display = 'block';#}
+{#            imagePreview.innerHTML = '<img src="' + e.target.result + '" alt="Profile Image Preview">';#}
+{#        }#}
+{#        #}
+{#        reader.readAsDataURL(input.files[0]);#}
+{#    }#}
+{#});#}
+{#</script>#}
+
 </body>
 </html>

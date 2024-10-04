@@ -50,3 +50,44 @@
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
+/*.custom-file-label {*/
+/*    display: block;*/
+/*    margin-top: 10px;*/
+/*    font-size: 16px;*/
+/*    color: #333;*/
+/*    background-color: #f9f9f9;*/
+/*    border: 2px dashed #ddd;*/
+/*    padding: 15px;*/
+/*    text-align: center;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.3s;*/
+/*}*/
+
+/*.custom-file-label:hover {*/
+/*    background-color: #e9e9e9;*/
+/*}*/
+
+/*.custom-file-label i {*/
+/*    margin-right: 10px;*/
+/*    font-size: 20px;*/
+/*}*/
+
+/*input[type="file"] {*/
+/*    display: none;*/
+/*}*/
+
+/*!* Styles for the image preview *!*/
+/*.image-preview {*/
+/*    width: 100px;*/
+/*    height: 100px;*/
+/*    margin-top: 10px;*/
+/*    border: 1px solid #ddd;*/
+/*    display: none;*/
+/*    position: relative;*/
+/*}*/
+
+/*.image-preview img {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    object-fit: cover;*/
+/*}*/
