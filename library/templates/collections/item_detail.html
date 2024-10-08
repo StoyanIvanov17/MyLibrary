@@ -11,31 +11,30 @@
 </div>
 
 {% block main_content %}
-<section class="item-details-page">
     <div class="item-details-container">
         <div class="item-details-cover">
             <img src="{{ object.item_image.url }}" alt="Cover Image" />
         </div>
-
+    
         <div class="item-details-info">
+            <div class="admin-action-buttons">
+                {% if user.is_superuser or user.is_staff %}
+                    <a href="{% url 'item edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
+                    <a href="#" id="delete-item-btn" class="item-details-remove">Delete</a>                
+                {% endif %}
+            </div>
+        
             <h2 class="item-details-title">{{ object.title }}</h2>
+        
             <div class="item-details-description">
                 <strong>Author:</strong> {{ object.author.name }}<br>
                 <strong>Genre:</strong> {{ object.genre }}<br>
                 <strong>Publication Date:</strong> {{ object.publication_date|date:"F j, Y" }}<br>
                 <strong>ISBN:</strong> {{ object.isbn }}<br>
             </div>
-
+    
             <div class="item-details-action-buttons">
                 <a href="#" id="open-sample-btn" class="item-details-sample-btn">READ A SAMPLE</a>
-                
-                <div class="admin-action-buttons">
-                    {% if user.is_superuser or user.is_staff %}
-                        <a href="{% url 'item edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
-                        <a href="#" id="delete-item-btn" class="item-details-remove">Delete</a>                
-                    {% endif %}
-                </div>
-
                 <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
                     <span class="save-text">
                         {% if object in request.user.libraryprofile.saved_items.all %}
@@ -44,27 +43,47 @@
                             SAVE TO PROFILE
                         {% endif %}
                     </span>
-                    <span class="heart-icon">
-                        {% if object in request.user.libraryprofile.saved_items.all %}
-                            ❤️
-                        {% else %}
-                            🤍
-                        {% endif %}
-                    </span>
                 </button>
             </div>
         </div>
     </div>
-</section>
 
+    <div class="review-section">
+        <h3>Reviews</h3>
+        <form id="review-form" class="review-form" method="post" action="{% url 'item detail' pk=object.pk slug=object.slug %}">
+            {% csrf_token %}
+            <label for="id_rating">Rating:</label>
+        
+            <div class="star-rating" id="star-rating">
+                {% for star in "12345" %}
+                    <span class="star" data-value="{{ star }}" onclick="selectStar({{ star }})">&#9733;</span>
+                {% endfor %}
+            </div>
+        
+            <textarea id="id_comment" name="comment" placeholder="Write your review here..." rows="4"></textarea>
+            <button type="submit" id="submit-review-btn">Submit Review</button> <!-- Changed to "submit" -->
+        </form>
+    
+        <div class="reviews-list" id="reviews-list">
+            <h4>All Reviews</h4>
+            {% for review in reviews %}
+            <div class="review-item">
+                <div class="review-rating">Rating: {{ review.rating }}/5</div>
+                <p class="review-comment">{{ review.comment }}</p>
+                <p class="review-user">Posted by {{ review.user.libraryprofile.full_name }} on {{ review.created_at|date:"Y-m-d H:i:s" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
 <!-- Sample Modal with Pagination -->
 <div id="sample-modal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h2>{{ object.title }} - Sample</h2>
         <div class="sample-text" id="sample-text-container">
-            <!-- Sample text pages will be inserted here -->
         </div>
+        
         <div class="pagination-controls">
             <button id="prev-page-btn" class="prev-page" disabled>Previous</button>
             <span id="current-page">Page 1</span>
@@ -72,8 +91,7 @@
         </div>
     </div>
 </div>
-
-<!-- Delete Modal -->
+    
 <div id="delete-modal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
@@ -85,6 +103,141 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    const reviewForm = document.getElementById('review-form');
+    const submitButton = document.getElementById('submit-review-btn');
+    const reviewList = document.getElementById('reviews-list');
+    const stars = document.querySelectorAll('.star'); // Select all star elements
+    let selectedRating = 1; // Default rating
+    
+    // Function to handle star selection
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            selectedRating = this.dataset.value; // Update the selected rating
+            updateStarDisplay(); // Update star display
+        });
+    });
+    
+    // Function to update star display
+    function updateStarDisplay() {
+        stars.forEach(star => {
+            if (parseInt(star.dataset.value) <= selectedRating) {
+                star.classList.add('selected'); // Add 'selected' class to filled stars
+            } else {
+                star.classList.remove('selected'); // Remove 'selected' class from empty stars
+            }
+        });
+    }
+    
+    submitButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+    
+        const formData = new FormData(reviewForm);
+        formData.append('rating', selectedRating); // Append the selected star rating
+    
+        fetch('{% url "item detail" pk=object.pk slug=object.slug %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const newReview = document.createElement('div');
+                newReview.classList.add('review-item');
+                newReview.innerHTML = `
+                    <div class="review-rating">Rating: ${selectedRating}/5</div>
+                    <p class="review-comment">${data.review_text}</p>
+                    <p class="review-user">Posted by ${data.username} on ${data.created_at}</p>
+                `;
+                reviewList.prepend(newReview); // Add new review to the top
+                reviewForm.reset(); // Clear the form
+    
+                // Deselect stars after submission
+                selectedRating = 1; // Reset the selected rating
+                updateStarDisplay(); // Update star display to default
+            } else {
+                alert('Failed to submit review: ' + JSON.stringify(data.errors));
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+
+<script>
+    const deleteModal = document.getElementById("delete-modal");
+    const deleteBtn = document.getElementById("delete-item-btn");
+    const closeDeleteBtns = document.getElementsByClassName("close-btn");
+    const cancelDeleteBtn = document.getElementById("cancel-delete-btn");
+    const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+
+    function disableScrolling() {
+        document.body.style.overflow = "hidden";
+    }
+
+    function enableScrolling() {
+        document.body.style.overflow = "auto";
+    }
+
+    function openModal(modalElement) {
+        modalElement.style.display = "block";
+        disableScrolling();
+    }
+
+    function closeModal(modalElement) {
+        modalElement.style.display = "none";
+        enableScrolling();
+    }
+
+    // Open delete modal
+    deleteBtn.onclick = function(event) {
+        event.preventDefault(); 
+        openModal(deleteModal);
+    }
+
+    // Close modals with close buttons
+    for (let closeBtn of closeDeleteBtns) {
+        closeBtn.onclick = function() {
+            closeModal(deleteModal);
+        }
+    }
+
+    // Cancel button closes the modal
+    cancelDeleteBtn.onclick = function() {
+        closeModal(deleteModal);
+    }
+
+    // Confirm delete action
+    confirmDeleteBtn.onclick = function() {
+        fetch("{% url 'item delete' pk=object.pk slug=object.slug %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "{% url 'item display' %}"; // Redirect after successful deletion
+            } else {
+                console.error('Error during deletion');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        if (event.target === deleteModal) {
+            closeModal(deleteModal);
+        }
+    }
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -157,18 +310,6 @@
                 document.getElementById("delete-modal").style.display = "none"; // Ensure delete modal closes
             };
         }
-
-        document.getElementById("delete-item-btn").addEventListener("click", function() {
-            document.getElementById("delete-modal").style.display = "block";
-        });
-
-        document.getElementById("confirm-delete-btn").addEventListener("click", function() {
-            sampleModal.style.display = "none";
-        });
-
-        document.getElementById("cancel-delete-btn").addEventListener("click", function() {
-            document.getElementById("delete-modal").style.display = "none"; // Close the delete modal
-        });
     });
 
     // Function to open a modal
@@ -203,13 +344,9 @@
         })
         .then(response => response.json())
         .then(data => {
-            const heartIcon = this.querySelector('.heart-icon');
-
             if (data.favorited) {
-                heartIcon.innerHTML = '❤️'; 
                 saveText.innerHTML = 'SAVED';
             } else {
-                heartIcon.innerHTML = '🤍'; 
                 saveText.innerHTML = 'SAVE TO PROFILE';
             }
         })
@@ -217,5 +354,20 @@
             console.error('Error:', error);
         });
     });
+</script>
+    
+<script>
+    document.querySelectorAll('.star').forEach(star => {
+    star.addEventListener('click', function() {
+        const rating = this.dataset.value;
+        const stars = this.parentNode.children;
+        Array.from(stars).forEach(star => {
+            star.classList.remove('selected');
+            if (star.dataset.value <= rating) {
+                star.classList.add('selected');
+            }
+        });
+    });
+});
 </script>
 {% endblock %}
