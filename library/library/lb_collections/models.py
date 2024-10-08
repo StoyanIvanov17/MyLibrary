@@ -1,8 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.template.defaultfilters import slugify
 
 from library.core.validators import MaxFileSizeValidator
 from library.lb_collections.core.isbn_generator import generate_isbn
+
+
+UserModel = get_user_model()
 
 
 class Author(models.Model):
@@ -80,3 +84,56 @@ class Item(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Reviews(models.Model):
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
+
+    item = models.ForeignKey(
+        Item,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+
+    rating = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
+    comment = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+
+class BorrowedItems(models.Model):
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE
+    )
+
+    book = models.ForeignKey(
+        Item,
+        on_delete=models.CASCADE
+    )
+
+    borrow_date = models.DateField(
+        auto_now_add=True
+    )
+
+    return_date = models.DateField(
+        null=True,
+        blank=True,
+    )
+
+    due_date = models.DateField()
+
+    def __str__(self):
+        return f"{self.user} borrowed {self.book.title}"

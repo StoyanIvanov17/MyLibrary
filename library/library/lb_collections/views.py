@@ -1,4 +1,5 @@
 from django.contrib.auth import mixins as auth_mixin
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -9,8 +10,8 @@ from django.views.decorators.http import require_POST
 from rest_framework.utils import json
 
 from library.lb_accounts.models import LibraryProfile
-from library.lb_collections.forms import ItemCreateForm, ItemEditForm
-from library.lb_collections.models import Item
+from library.lb_collections.forms import ItemCreateForm, ItemEditForm, ReviewForm
+from library.lb_collections.models import Item, Reviews
 
 
 class BookCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
@@ -45,6 +46,29 @@ class ItemListView(views.ListView):
 class ItemDetailView(views.DetailView):
     queryset = Item.objects.all()
     template_name = 'collections/item_detail.html'
+    form_class = ReviewForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['review_form'] = self.form_class()
+        context['reviews'] = Reviews.objects.filter(item=self.get_object())
+        return context
+
+    def post(self, request, *args, **kwargs):
+        item = self.get_object()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.item = item
+            review.user = request.user
+            review.save()
+            return JsonResponse({
+                'success': True,
+                'review_text': review.comment,
+                'username': request.user.libraryprofile.full_name,
+                'created_at': review.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        return JsonResponse({'success': False, 'errors': form.errors}, status=400)
 
 
 class ItemEditView(views.UpdateView):

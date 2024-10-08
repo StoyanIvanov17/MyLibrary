@@ -5,11 +5,6 @@ from library.core.validators import MaxFileSizeValidator
 from library.lb_accounts.models import LibraryUser
 
 
-from django.contrib.auth import get_user_model
-
-UserModel = get_user_model()
-
-
 class Event(models.Model):
     name = models.CharField(
         max_length=255

@@ -1,12 +1,3 @@
-.item-details-page {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align items to the top of the container */
-    padding: 20px;
-    background-color: #f9f9f9;
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
-}
-
 .item-details-container {
     display: flex;
     justify-content: space-between;
@@ -49,12 +40,14 @@
     margin: 5px 0; /* Add some space between lines */
 }
 
+.admin-action-buttons,
 .item-details-action-buttons {
     display: flex;
     gap: 10px;
     align-items: center;
 }
 
+.admin-action-buttons a,
 .item-details-action-buttons a {
     display: inline-block;
     padding: 8px 30px;
@@ -66,19 +59,27 @@
 }
 
 .item-details-edit {
-    background-color: #4CAF50;
+    background-color: #159768;
     color: white;
 }
 
 .item-details-remove {
-    background-color: #f44336;
+    background-color: #c82333;
     color: white;
+}
+
+.item-details-edit:hover {
+    background-color: #176545;
+}
+
+.item-details-remove:hover {
+    background-color: #770a14;
 }
 
 .item-details-sample-btn {
     display: inline-block;
     padding: 8px 30px;
-    background-color: #007bff;
+    background-color: #28a3a3;
     color: white;
     border-radius: 5px;
     text-decoration: none;
@@ -88,7 +89,7 @@
 }
 
 .item-details-sample-btn:hover {
-    background-color: #0056b3;
+    background-color: #006060;
 }
 
 /* The Modal (background) */
@@ -145,9 +146,8 @@
 }
 
 .save-profile-btn {
-    display: flex;
     align-items: center;
-    background-color: #007bff; /* Background color */
+    background-color: #28a3a3; /* Background color */
     color: white; /* Text color */
     border: none; /* Remove border */
     padding: 10px 15px; /* Adjusted padding */
@@ -159,13 +159,7 @@
 }
 
 .save-profile-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-.heart-icon {
-    margin-left: 8px; /* Space between text and heart */
-    font-size: 1.5em; /* Heart size */
-    line-height: 1; /* Align heart icon with text */
+    background-color: #006060; /* Darker blue on hover */
 }
 
 .delete-action-buttons {
@@ -223,4 +217,77 @@
     text-align: center;
     white-space: nowrap; /* Keeps the text on a single line */
     line-height: 1; /* Ensures proper vertical alignment */
+}
+
+.review-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.star-rating {
+    display: flex;
+    gap: 5px;
+}
+
+.star {
+    font-size: 24px;
+    color: #ccc; /* Default star color */
+    cursor: pointer;
+}
+
+.star:hover,
+.star:hover ~ .star {
+    color: gold; /* Color when hovered */
+}
+
+.star.selected {
+    color: gold; /* Color for selected stars */
+}
+
+textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: none; /* Disable resizing */
+}
+
+#submit-review-btn {
+    background-color: #28a3a3;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submit-review-btn:hover {
+    background-color: #006060; /* Darker on hover */
+}
+
+.reviews-list {
+    margin-top: 20px;
+}
+
+.review-item {
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.review-rating {
+    font-weight: bold;
+}
+
+.review-comment {
+    margin: 5px 0;
 }

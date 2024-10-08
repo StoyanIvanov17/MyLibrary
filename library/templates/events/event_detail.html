@@ -25,13 +25,6 @@
                        SAVE TO PROFILE
                    {% endif %}
                </span>
-               <span class="heart-icon">
-                   {% if object in request.user.libraryprofile.saved_events.all %}
-                       ❤️
-                   {% else %}
-                       🤍
-                   {% endif %}
-               </span>
            </button>
        </div>
 
@@ -153,13 +146,9 @@
         })
         .then(response => response.json())
         .then(data => {
-            const heartIcon = this.querySelector('.heart-icon');
-
             if (data.favorited) {
-                heartIcon.innerHTML = '❤️'; 
                 saveText.innerHTML = 'SAVED';
             } else {
-                heartIcon.innerHTML = '🤍'; 
                 saveText.innerHTML = 'SAVE TO PROFILE';
             }
         })
