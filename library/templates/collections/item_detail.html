@@ -17,6 +17,11 @@
         </div>
     
         <div class="item-details-info">
+            <div class="search-library">
+                <input type="text" placeholder="Find in libraries..">
+                <button>🔍</button>
+            </div>
+            
             <div class="admin-action-buttons">
                 {% if user.is_superuser or user.is_staff %}
                     <a href="{% url 'item edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
@@ -38,7 +43,7 @@
                 <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
                     <span class="save-text">
                         {% if object in request.user.libraryprofile.saved_items.all %}
-                            SAVED
+                            ALREADY SAVED
                         {% else %}
                             SAVE TO PROFILE
                         {% endif %}
@@ -345,7 +350,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.favorited) {
-                saveText.innerHTML = 'SAVED';
+                saveText.innerHTML = 'ALREADY SAVED';
             } else {
                 saveText.innerHTML = 'SAVE TO PROFILE';
             }

@@ -111,29 +111,3 @@ class Reviews(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
-
-
-class BorrowedItems(models.Model):
-    user = models.ForeignKey(
-        UserModel,
-        on_delete=models.CASCADE
-    )
-
-    book = models.ForeignKey(
-        Item,
-        on_delete=models.CASCADE
-    )
-
-    borrow_date = models.DateField(
-        auto_now_add=True
-    )
-
-    return_date = models.DateField(
-        null=True,
-        blank=True,
-    )
-
-    due_date = models.DateField()
-
-    def __str__(self):
-        return f"{self.user} borrowed {self.book.title}"

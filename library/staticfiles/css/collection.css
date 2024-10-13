@@ -1,96 +1,136 @@
-.show-collection-container {
+/* Main wrapper for the collections page */
+.collections-wrapper {
     display: flex;
-    flex-wrap: wrap; /* Allow items to wrap to the next line */
-    justify-content: center; /* Center the items */
+    flex-wrap: wrap;
+    justify-content: space-between;
     margin: 20px;
-
 }
 
+/* Filter form styling */
+.search-filter-container {
+    flex: 1 1 25%;
+    max-width: 250px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.filter-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a3a3;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+.filter-button:hover {
+    background-color: #006060;
+}
+
+/* Collection items grid styling */
+.show-collection-container {
+    flex: 3 1 70%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Individual item styling */
 .show-collection-item {
-    position: relative; /* For positioning the overlay */
-    margin: 15px; /* Space between items */
-    overflow: hidden; /* Hide overflow from the image */
-    border-radius: 8px; /* Rounded corners */
-    transition: transform 0.3s; /* Smooth scaling on hover */
+    position: relative;
+    width: 200px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: transform 0.3s;
+    border: 3px solid #6F4E37;
 }
 
 .show-collection-item:hover {
-    transform: scale(1.05); /* Scale effect on hover */
+    transform: scale(1.05);
 }
 
 .show-collection-image {
-    max-width: 200px; /* Adjust image size */
-    display: block; /* Center the image */
-    border-radius: 8px; /* Round the image corners */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .show-collection-overlay {
-    position: absolute; /* Overlay on top of the image */
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.3s ease; /* Smooth transition */
-    display: flex; /* Center text */
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center; /* Center text horizontally */
-    justify-content: center; /* Center vertically */
-    padding-top: 20px; /* Add padding to create space above the title */
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .show-collection-item:hover .show-collection-overlay {
-    opacity: 1; /* Show overlay on hover */
+    opacity: 1;
 }
 
 .show-collection-text {
-    text-align: center; /* Center text */
-    color: white; /* White text for contrast */
+    color: white;
+    text-align: center;
 }
 
 .show-collection-title {
-    font-size: 20px; /* Title font size */
+    font-size: 18px;
     margin: 0;
 }
 
 .show-collection-author {
-    font-size: 16px; /* Author font size */
-    margin: 5px 0;
-    margin-bottom: 15px; /* Add margin below author for spacing */
+    font-size: 14px;
+    margin: 5px 0 15px;
 }
 
 .show-collection-details-button {
-    background-color: #007bff; /* Primary button color */
-    color: white; /* Text color */
-    padding: 10px 15px;
-    text-decoration: none;
+    background-color: #28a3a3;
+    color: white;
+    padding: 8px 12px;
     border-radius: 4px;
-    transition: background-color 0.3s ease;
-    margin-top: 30px; /* Further increase margin to position it lower */
+    text-decoration: none;
+    transition: background-color 0.3s;
 }
 
 .show-collection-details-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: #006060;
 }
 
 .show-collection-title-main {
-    text-align: center; /* Center the title */
-    font-size: 36px; /* Large font size */
-    font-weight: bold; /* Make it bold */
-    color: #333; /* Dark color for contrast */
-    margin: 40px 0; /* Space above and below the title */
-    position: relative; /* For positioning */
-    text-transform: uppercase; /* Uppercase letters */
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    margin: 40px 0;
+    text-transform: uppercase;
 }
 
-/* Optional: Add a decorative line below the title */
 .show-collection-title-main::after {
-    content: ""; /* Create a pseudo-element */
-    display: block; /* Make it a block element */
-    width: 50px; /* Width of the line */
-    height: 4px; /* Height of the line */
-    background-color: #007bff; /* Line color */
-    margin: 10px auto; /* Center the line */
-    border-radius: 2px; /* Rounded edges */
+    content: "";
+    display: block;
+    width: 50px;
+    height: 4px;
+    background-color: #28a3a3;
+    margin: 10px auto;
+    border-radius: 2px;
 }

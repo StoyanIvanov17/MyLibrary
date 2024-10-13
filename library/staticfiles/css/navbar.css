@@ -72,7 +72,7 @@
     padding: 10px 25px; /* Increase padding */
     font-size: 1rem; /* Font size for buttons */
     color: #fff;
-    background-color: #007bff; /* Button background color */
+    background-color: #28a3a3; /* Button background color */
     border: none;
     border-radius: 5px; /* Rounded corners */
     text-decoration: none;
@@ -80,21 +80,15 @@
 }
 
 .btn:hover {
-    background-color: #0056b3; /* Darken button on hover */
+    background-color: #006060; /* Darken button on hover */
 }
 
+.login-btn,
 .register-btn {
-    background-color: #28a745; /* Green background for register button */
+    background-color: #28a3a3; /* Green background for register button */
 }
 
-.register-btn:hover {
-    background-color: #218838; /* Darken on hover */
-}
-
-.login-btn {
-    background-color: #007bff; /* Blue background for login button */
-}
-
+.register-btn:hover,
 .login-btn:hover {
-    background-color: #0056b3; /* Darken on hover */
+    background-color: #006060; /* Darken on hover */
 }

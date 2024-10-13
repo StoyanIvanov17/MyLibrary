@@ -54,7 +54,7 @@
 }
 
 .log_reg_form input:focus {
-    border-color: #007bff;
+    border-color: #28a3a3;
     outline: none;
 }
 
@@ -68,7 +68,7 @@ p a {
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
+    background-color: #28a3a3;
     color: #fff;
     font-size: 16px;
     text-decoration: none;
@@ -76,5 +76,5 @@ p a {
 }
 
 p a:hover {
-    background-color: #0056b3;
+    background-color: #006060;
 }
