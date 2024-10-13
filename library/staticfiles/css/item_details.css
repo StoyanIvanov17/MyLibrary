@@ -291,3 +291,47 @@ textarea {
 .review-comment {
     margin: 5px 0;
 }
+.search-library {
+    display: flex;
+    align-items: center;
+    width: 250px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.search-library input {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 5px;
+    width: 100%;
+}
+
+.search-library input::placeholder {
+    color: #888;
+}
+
+.search-library button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    color: #fff;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: -3px;
+}
+
+.search-library button:hover {
+    background-color: transparent;
+}
+
+.search-library button:active {
+    background-color: transparent;
+}

@@ -29,16 +29,20 @@ class BookCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
 
 
 class ItemListView(views.ListView):
-    queryset = Item.objects.all()
     template_name = 'collections/item_display.html'
+    context_object_name = 'items'
 
     def get_queryset(self):
+        genre_query = self.request.GET.get('genre', '')
+
+        if genre_query:
+            return Item.objects.filter(genre__icontains=genre_query)
+
         return Item.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context['items'] = Item.objects.all()
+        context['genre_query'] = self.request.GET.get('genre', '')
 
         return context
 

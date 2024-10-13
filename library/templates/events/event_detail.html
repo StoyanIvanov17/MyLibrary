@@ -20,9 +20,9 @@
            <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
                <span class="save-text">
                    {% if object in request.user.libraryprofile.saved_events.all %}
-                       SAVED
+                       ALREADY JOINED
                    {% else %}
-                       SAVE TO PROFILE
+                       I'M INTERESTED
                    {% endif %}
                </span>
            </button>
@@ -147,9 +147,9 @@
         .then(response => response.json())
         .then(data => {
             if (data.favorited) {
-                saveText.innerHTML = 'SAVED';
+                saveText.innerHTML = 'ALREADY JOINED';
             } else {
-                saveText.innerHTML = 'SAVE TO PROFILE';
+                saveText.innerHTML = "I'M INTERESTED";
             }
         })
         .catch(error => {
