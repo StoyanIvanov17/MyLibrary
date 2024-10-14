@@ -27,8 +27,9 @@ class Author(models.Model):
 
 class Item(models.Model):
     class ItemTypeChoices(models.TextChoices):
-        BOOK = 'Book'
-        MEDIA = 'Media'
+        BOOK = 'book', 'Book'
+        AUDIOBOOK = 'audiobook', 'Audio Book'
+        MAGAZINE = 'magazine', 'Magazine'
 
     MAX_TITLE_LENGTH = 255
     MAX_ITEM_TYPE_LENGTH = max(len(x) for x in ItemTypeChoices)

@@ -13,9 +13,24 @@
 
     <div class="collections-wrapper">
         <!-- Filter Form Container -->
-        <div class="search-filter-container">
+       <div class="search-filter-container">
             <form method="GET" action="{% url 'item display' %}">
-                <input type="text" name="genre" placeholder="Search by Genre" value="{{ genre_query }}" class="search-input">
+                <label>
+                    <input type="text" name="genre" placeholder="Search by Genre" value="{{ genre_query }}" class="search-input">
+                </label>
+                
+                <label>
+                    <input type="radio" name="item_type" value="All" {% if item_type_query == 'All' %}checked{% endif %}>
+                    All
+                </label>
+        
+                {% for value, label in item_choices %}
+                    <label>
+                        <input type="radio" name="item_type" value="{{ value }}" {% if item_type_query == value %}checked{% endif %}>
+                        {{ label }}
+                    </label>
+                {% endfor %}
+                
                 <button type="submit" class="filter-button">Search</button>
             </form>
         </div>

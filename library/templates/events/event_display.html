@@ -18,10 +18,14 @@
 <div class="page-container">
     <div class="search-filter-container">
         <form method="GET" action="{% url 'event display' %}">
-            <input type="radio" name="filter" value="upcoming" {% if filter_upcoming == 'upcoming' %}checked{% endif %}>
-            Upcoming
-            <input type="radio" name="filter" value="all" {% if filter_upcoming == 'all' %}checked{% endif %}>
-            All
+            <label>
+                <input type="radio" name="filter" value="upcoming" {% if filter_upcoming == 'upcoming' %}checked{% endif %}>
+                Upcoming
+            </label>
+            <label>
+                <input type="radio" name="filter" value="all" {% if filter_upcoming == 'all' %}checked{% endif %}>
+                All
+            </label>
             <button type="submit" class="filter-button">Filter</button>
         </form>
     </div>
