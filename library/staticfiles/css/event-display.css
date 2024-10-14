@@ -1,10 +1,18 @@
+/* Main container for filter and events */
+.page-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 90%;
+    margin: 0 auto;
+}
+
 /* Container for all events */
 .event-container {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    width: 90%;
-    margin: 0 auto;
+    flex: 3; /* Take up more space */
 }
 
 /* Each event item container */
@@ -59,4 +67,7 @@
     object-fit: cover;
     border-radius: 8px;
     flex-shrink: 0;
+}
+.search-filter-container input[type="radio"] {
+    margin-right: 8px;
 }

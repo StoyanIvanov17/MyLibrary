@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.views import generic as views
 from django.views.decorators.http import require_POST
 
@@ -29,9 +30,15 @@ class EventCreateView(views.CreateView):
 
 def events_listed(request):
     events = Event.objects.all()
+    current_datetime = timezone.now()
+    filter_option = request.GET.get('filter', '')
+
+    if filter_option == 'upcoming':
+        events = events.filter(date__gte=current_datetime)
 
     context = {
         'events': events,
+        'filter_upcoming': filter_option,
     }
 
     return render(request, 'events/event_display.html', context)

@@ -32,13 +32,17 @@ class ItemListView(views.ListView):
     template_name = 'collections/item_display.html'
     context_object_name = 'items'
 
-    def get_queryset(self):
+    def filter_by_genre(self, queryset):
         genre_query = self.request.GET.get('genre', '')
 
         if genre_query:
             return Item.objects.filter(genre__icontains=genre_query)
 
-        return Item.objects.all()
+        return queryset
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return self.filter_by_genre(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
