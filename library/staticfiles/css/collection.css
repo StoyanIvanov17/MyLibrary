@@ -16,6 +16,11 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.search-filter-container label {
+    display: block;
+    margin-bottom: 10px;
+}
+
 .search-input {
     width: 92%;
     padding: 10px;

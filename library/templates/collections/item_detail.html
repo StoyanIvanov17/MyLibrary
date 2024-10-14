@@ -36,6 +36,7 @@
                 <strong>Genre:</strong> {{ object.genre }}<br>
                 <strong>Publication Date:</strong> {{ object.publication_date|date:"F j, Y" }}<br>
                 <strong>ISBN:</strong> {{ object.isbn }}<br>
+                <strong>Item Type:</strong> {{ object.get_item_type_display }}<br>
             </div>
     
             <div class="item-details-action-buttons">

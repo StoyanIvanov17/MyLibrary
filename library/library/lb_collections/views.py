@@ -1,5 +1,6 @@
 from django.contrib.auth import mixins as auth_mixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -34,11 +35,17 @@ class ItemListView(views.ListView):
 
     def filter_by_genre(self, queryset):
         genre_query = self.request.GET.get('genre', '')
+        item_type_query = self.request.GET.get('item_type', '')
+
+        query = Q()
 
         if genre_query:
-            return Item.objects.filter(genre__icontains=genre_query)
+            query &= Q(genre__icontains=genre_query)
 
-        return queryset
+        if item_type_query and item_type_query != 'All':
+            query &= Q(item_type=item_type_query)
+
+        return queryset.filter(query)
 
     def get_queryset(self):
         queryset = Item.objects.all()
@@ -47,6 +54,8 @@ class ItemListView(views.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['genre_query'] = self.request.GET.get('genre', '')
+        context['item_type_query'] = self.request.GET.get('item_type', '')
+        context['item_choices'] = Item.ItemTypeChoices.choices
 
         return context
 
