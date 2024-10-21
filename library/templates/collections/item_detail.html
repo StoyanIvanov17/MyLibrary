@@ -23,7 +23,7 @@
             </div>
             
             <div class="admin-action-buttons">
-                {% if user.is_superuser or user.is_staff %}
+                {% if user.is_superuser %}
                     <a href="{% url 'item edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
                     <a href="#" id="delete-item-btn" class="item-details-remove">Delete</a>                
                 {% endif %}

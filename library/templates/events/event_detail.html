@@ -14,7 +14,7 @@
 <div class="event-detail-container">
     <div class="event-detail-content">
          <div class="item-details-action-buttons">
-           {% if user.is_superuser or user.is_staff %}
+           {% if user.is_superuser %}
                <a href="{% url 'event edit' pk=object.pk slug=object.slug %}" class="item-details-edit">Edit</a>
                <a href="#" id="delete-item-btn" class="item-details-remove">Delete</a>           {% endif %}
            <button id="save-item-btn" data-item-id="{{ object.id }}" class="save-profile-btn">
