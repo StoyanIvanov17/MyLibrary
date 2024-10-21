@@ -4,7 +4,6 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views import generic as views
-from django.views.decorators.http import require_POST
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response

@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth import models as auth_models
 from django.utils import timezone
@@ -85,6 +87,16 @@ class LibraryProfile(models.Model):
         max_length=MAX_CITY_NAME_LENGTH,
         null=True,
         blank=True,
+    )
+
+    verified = models.BooleanField(
+        default=False
+    )
+
+    verification_token = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
     )
 
     profile_picture = models.ImageField(
