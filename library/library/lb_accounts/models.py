@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth import models as auth_models
 from django.utils import timezone
@@ -87,6 +89,16 @@ class LibraryProfile(models.Model):
         blank=True,
     )
 
+    verified = models.BooleanField(
+        default=False
+    )
+
+    verification_token = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
+
     profile_picture = models.ImageField(
         upload_to='profile_photos/',
         null=True,
@@ -117,5 +129,3 @@ class LibraryProfile(models.Model):
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
-
-

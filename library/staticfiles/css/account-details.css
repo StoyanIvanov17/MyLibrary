@@ -48,14 +48,14 @@
 
 .sidebar-nav a {
     text-decoration: none;
-    color: #007bff;
+    color: #28a3a3;
     font-size: 16px;
     font-weight: 600;
 }
 
 .sidebar-nav a:hover {
     text-decoration: underline;
-    color: #0056b3;
+    color: #006060;
 }
 
 .profile-main-content {

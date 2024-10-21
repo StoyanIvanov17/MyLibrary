@@ -77,12 +77,12 @@
 
 /* Edit button */
 .event-detail-edit-btn {
-    background-color: #007bff;
+    background-color: #28a3a3;
     color: white;
 }
 
 .event-detail-edit-btn:hover {
-    background-color: #0056b3;
+    background-color: #006060;
 }
 
 /* Delete button */

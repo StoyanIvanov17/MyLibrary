@@ -1,11 +1,17 @@
+from asgiref.sync import sync_to_async
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.views import generic as views
 from django.views.decorators.http import require_POST
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 from library.lb_events.forms import EventCreateForm
 from library.lb_events.models import Event
+from library.utils.save_functionality import toggle_saved_object
 
 
 class EventCreateView(views.CreateView):
@@ -19,7 +25,6 @@ class EventCreateView(views.CreateView):
             'slug': self.object.slug
         })
 
-    # for association with the user
     def get_form(self, form_class=form_class):
         form = super().get_form(form_class=form_class)
 
@@ -29,9 +34,15 @@ class EventCreateView(views.CreateView):
 
 def events_listed(request):
     events = Event.objects.all()
+    current_datetime = timezone.now()
+    filter_option = request.GET.get('filter', '')
+
+    if filter_option == 'upcoming':
+        events = events.filter(date__gte=current_datetime)
 
     context = {
         'events': events,
+        'filter_upcoming': filter_option,
     }
 
     return render(request, 'events/event_display.html', context)
@@ -59,17 +70,15 @@ class EventDeleteView(views.DeleteView):
     success_url = reverse_lazy('event display')
 
 
-@require_POST
-def save_event_view(request, pk, slug):
-    event = get_object_or_404(Event, pk=pk)
-    user_profile = request.user.libraryprofile
+class SaveEventAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
-    # Toggle favorite status
-    if event in user_profile.saved_events.all():
-        user_profile.saved_events.remove(event)
-        favorited = False
-    else:
-        user_profile.saved_events.add(event)
-        favorited = True
+    def post(self, request, pk, slug):
+        try:
+            user_profile = request.user.libraryprofile
+            favorited = toggle_saved_object(user_profile, Event, 'saved_events', pk)
 
-    return JsonResponse({'favorited': favorited})
+            return JsonResponse({'favorited': favorited})
+
+        except Event.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Event not found.'}, status=404)
