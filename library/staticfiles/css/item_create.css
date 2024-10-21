@@ -66,7 +66,7 @@
 
 .item-create-form input:focus,
 .item-create-form select:focus {
-    border-color: #007bff; /* Border color on focus */
+    border-color: #28a3a3; /* Border color on focus */
     outline: none; /* Remove outline */
 }
 
@@ -75,7 +75,7 @@
     padding: 10px; /* Padding for button */
     font-size: 1.2rem; /* Font size for button */
     color: white; /* Text color */
-    background-color: #007bff; /* Button background color */
+    background-color: #28a3a3; /* Button background color */
     border: none; /* No border */
     border-radius: 5px; /* Rounded corners */
     cursor: pointer; /* Pointer cursor */
@@ -83,7 +83,7 @@
 }
 
 .item-create-submit-button:hover {
-    background-color: #0056b3; /* Darken button on hover */
+    background-color: #006060; /* Darken button on hover */
 }
 .item-create-form input,
 .item-create-form select,

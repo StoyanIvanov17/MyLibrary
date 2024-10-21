@@ -1,10 +1,14 @@
+import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-c&p821+s*kaw6hq7ka@^b%2bk&p225e*=y8dqckze-gb$&l!y('
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = True
 
@@ -109,4 +113,11 @@ AUTH_USER_MODEL = 'lb_accounts.LibraryUser'
 LOGIN_REDIRECT_URL = 'registration profile'
 LOGIN_URL = 'signin user'
 LOGOUT_REDIRECT_URL = 'home page'
+
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 

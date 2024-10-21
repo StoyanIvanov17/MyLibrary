@@ -1,17 +1,17 @@
 from django.contrib.auth import mixins as auth_mixin
-from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 from django.views import generic as views
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from rest_framework.utils import json
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from library.lb_accounts.models import LibraryProfile
 from library.lb_collections.forms import ItemCreateForm, ItemEditForm, ReviewForm
-from library.lb_collections.models import Item, Reviews
+from library.lb_collections.models import Item, Review
+from library.utils.save_functionality import toggle_saved_object
 
 
 class BookCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
@@ -29,16 +29,32 @@ class BookCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
 
 
 class ItemListView(views.ListView):
-    queryset = Item.objects.all()
     template_name = 'collections/item_display.html'
 
+    def filter_by_genre(self, queryset):
+        genre_query = self.request.GET.get('genre', '')
+        item_type_query = self.request.GET.get('item_type', '')
+
+        query = Q()
+
+        if genre_query:
+            query &= Q(genre__icontains=genre_query)
+
+        if item_type_query and item_type_query != 'All':
+            query &= Q(item_type=item_type_query)
+
+        return queryset.filter(query)
+
     def get_queryset(self):
-        return Item.objects.all()
+        queryset = Item.objects.all()
+        return self.filter_by_genre(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context['items'] = Item.objects.all()
+        context['genre_query'] = self.request.GET.get('genre', '')
+        context['item_type_query'] = self.request.GET.get('item_type', '')
+        context['item_choices'] = Item.ItemTypeChoices.choices
+        context['items'] = self.get_queryset()
 
         return context
 
@@ -51,24 +67,31 @@ class ItemDetailView(views.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['review_form'] = self.form_class()
-        context['reviews'] = Reviews.objects.filter(item=self.get_object())
+        context['reviews'] = Review.objects.filter(item=self.get_object())
         return context
 
     def post(self, request, *args, **kwargs):
-        item = self.get_object()
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.item = item
-            review.user = request.user
-            review.save()
-            return JsonResponse({
-                'success': True,
-                'review_text': review.comment,
-                'username': request.user.libraryprofile.full_name,
-                'created_at': review.created_at.strftime('%Y-%m-%d %H:%M:%S')
-            })
-        return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+        try:
+            item = self.get_object()
+            form = self.form_class(request.POST)
+
+            if form.is_valid():
+                review = form.save(commit=False)
+                review.item = item
+                review.user = request.user
+                review.save()
+
+                return JsonResponse({
+                    'success': True,
+                    'review_text': review.comment,
+                    'username': request.user.libraryprofile.full_name,
+                    'created_at': review.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                })
+
+            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+
+        except ObjectDoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Item not found'}, status=404)
 
 
 class ItemEditView(views.UpdateView):
@@ -83,16 +106,15 @@ class ItemDeleteView(views.DeleteView):
     success_url = reverse_lazy('item display')
 
 
-@require_POST
-def save_item_view(request, pk, slug):
-    item = get_object_or_404(Item, pk=pk)
-    user_profile = request.user.libraryprofile
+class SaveItemAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
-    if item in user_profile.saved_items.all():
-        user_profile.saved_items.remove(item)
-        favorited = False
-    else:
-        user_profile.saved_items.add(item)
-        favorited = True
+    def post(self, request, pk, slug):
+        try:
+            user_profile = request.user.libraryprofile
+            favorited = toggle_saved_object(user_profile, Item, 'saved_items', pk)
 
-    return JsonResponse({'favorited': favorited})
+            return Response({'favorited': favorited}, status=status.HTTP_200_OK)
+
+        except Item.DoesNotExist:
+            return Response({'success': False, 'error': 'Item not found.'}, status=status.HTTP_404_NOT_FOUND)

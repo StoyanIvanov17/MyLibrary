@@ -1,6 +1,6 @@
 from django import forms
 
-from library.lb_collections.models import Item, Author, Reviews
+from library.lb_collections.models import Item, Author, Review
 
 
 class ItemBaseForm(forms.ModelForm):
@@ -43,7 +43,7 @@ class ItemEditForm(ItemBaseForm):
 
 class ReviewForm(forms.ModelForm):
     class Meta:
-        model = Reviews
+        model = Review
         fields = ['rating', 'comment']
         widgets = {
             'rating': forms.NumberInput(attrs={'min': 1, 'max': 5, 'placeholder': 'Rate 1-5'}),

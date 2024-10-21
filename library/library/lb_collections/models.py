@@ -27,8 +27,9 @@ class Author(models.Model):
 
 class Item(models.Model):
     class ItemTypeChoices(models.TextChoices):
-        BOOK = 'Book'
-        MEDIA = 'Media'
+        BOOK = 'book', 'Book'
+        AUDIOBOOK = 'audiobook', 'Audio Book'
+        MAGAZINE = 'magazine', 'Magazine'
 
     MAX_TITLE_LENGTH = 255
     MAX_ITEM_TYPE_LENGTH = max(len(x) for x in ItemTypeChoices)
@@ -86,7 +87,7 @@ class Item(models.Model):
         return self.title
 
 
-class Reviews(models.Model):
+class Review(models.Model):
     user = models.ForeignKey(
         UserModel,
         on_delete=models.CASCADE,
@@ -111,29 +112,3 @@ class Reviews(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
-
-
-class BorrowedItems(models.Model):
-    user = models.ForeignKey(
-        UserModel,
-        on_delete=models.CASCADE
-    )
-
-    book = models.ForeignKey(
-        Item,
-        on_delete=models.CASCADE
-    )
-
-    borrow_date = models.DateField(
-        auto_now_add=True
-    )
-
-    return_date = models.DateField(
-        null=True,
-        blank=True,
-    )
-
-    due_date = models.DateField()
-
-    def __str__(self):
-        return f"{self.user} borrowed {self.book.title}"
