@@ -1,3 +1,4 @@
+from asgiref.sync import sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
