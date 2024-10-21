@@ -87,7 +87,7 @@ class Item(models.Model):
         return self.title
 
 
-class Reviews(models.Model):
+class Review(models.Model):
     user = models.ForeignKey(
         UserModel,
         on_delete=models.CASCADE,

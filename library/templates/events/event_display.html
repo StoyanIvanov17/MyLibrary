@@ -32,19 +32,21 @@
 
     <div class="event-container">
         {% for event in events %}
-        <div class="event-item">
-            <div class="event-content">
-                <h2 class="event-name">{{ event.name }}</h2>
-                <p class="event-datetime">{{ event.date }} @ {{ event.time }}</p>
-                <p class="event-location">{{ event.location }}</p>
-                <p class="event-age-group">Age Group: {{ event.age_group }}</p>
-                <p class="event-description">{{ event.description|truncatewords:20 }}</p>
-                <a href="{% url 'event detail' pk=event.pk slug=event.slug %}" class="event-detail-link">Event Details</a>
+            <div class="event-item">
+                <div class="event-content">
+                    <h2 class="event-name">{{ event.name }}</h2>
+                    <p class="event-datetime">{{ event.date }} @ {{ event.time }}</p>
+                    <p class="event-location">{{ event.location }}</p>
+                    <p class="event-age-group">Age Group: {{ event.age_group }}</p>
+                    <p class="event-description">{{ event.description|truncatewords:20 }}</p>
+                    <a href="{% url 'event detail' pk=event.pk slug=event.slug %}" class="event-detail-link">Event Details</a>
+                </div>
+                <div class="event-image">
+                    <img src="{{ event.event_image.url }}" alt="{{ event.name }}">
+                </div>
             </div>
-            <div class="event-image">
-                <img src="{{ event.event_image.url }}" alt="{{ event.name }}">
-            </div>
-        </div>
+        {% empty %}
+            <h2 class="show-collection-title">No events found at the moment.</h2>
         {% endfor %}
     </div>
 </div>
